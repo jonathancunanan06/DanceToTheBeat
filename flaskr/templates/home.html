@@ -5,12 +5,37 @@
     {% endassets %}
 {% endblock %}
 {% block body %}
-    <input type="file" id="video-upload" accept="video/mp4" />
-    {% for i in range(10) %}
-        <div>
-            <a href="/prepare/{{ i }}">
-                <img src="https://placehold.co/200x100" alt="">
-            </a>
+
+        <div class="container">
+
+            <div class="menu">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+
+            <div class="top">
+                <p class="recent">Recent</p>
+                <div class="defvid">
+                        <input type="file" id="video-upload" accept="video/mp4" />
+                        <label for="video-upload" class="upload-icon">
+                            <i class="fas fa-upload"></i> 
+                        </label>
+                    {% for i in range(5) %}
+                    <div class="vids">
+                        <a href="/prepare/{{ i }}">
+                            <img src="https://placehold.co/200x100" alt="">
+                        </a>
+                        <div class="des">
+                            <p class="des1">Name</p>
+                            <p class="des2">stars</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+    
         </div>
-    {% endfor %}
+    
 {% endblock %}
