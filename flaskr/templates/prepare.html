@@ -1,10 +1,4 @@
 {% extends 'base.html' %}
-{% block head %}
-    {% assets filters="jsmin",
-        output="gen/prepare.bundle.js", "prepare.js" %}
-        <script type="text/javascript" src="{{ ASSET_URL }}"></script>
-    {% endassets %}
-{% endblock %}
 {% block body %}
     <video id="prepare-camera"
            width="100%"
@@ -12,4 +6,8 @@
            autoplay
            style="transform: scaleX(-1)">
     </video>
+    {% assets filters="jsmin",
+        output="gen/prepare.bundle.js", "prepare.js" %}
+        <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+    {% endassets %}
 {% endblock %}

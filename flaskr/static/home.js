@@ -23,15 +23,12 @@ function handleVideoUpload(event) {
       file: blobUrl,
     }),
   );
-  window.location.href = "/prepare";
+
+  Turbo.visit("/prepare");
 }
 
-function attachEventListener() {
+document.addEventListener("turbo:load", () => {
   /** @type HTMLInputElement? */
   const uploadInput = document.getElementById("video-upload");
   if (uploadInput) uploadInput.addEventListener("change", handleVideoUpload);
-}
-
-document.addEventListener("htmx:load", () => {
-  attachEventListener();
 });

@@ -4,7 +4,6 @@ function startPrepareCamera() {
   if (!prepareTarget) {
     window.location.replace("/");
   }
-
   localStorage.removeItem("prepare_page_target");
 
   /** @type HTMLVideoElement */
@@ -17,4 +16,4 @@ function startPrepareCamera() {
     });
 }
 
-document.addEventListener("htmx:load", startPrepareCamera);
+startPrepareCamera();
