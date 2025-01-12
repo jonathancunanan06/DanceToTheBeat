@@ -1,9 +1,11 @@
 import os
 
 from flask import Flask
+from flask_assets import Bundle, Environment
 from flask_socketio import SocketIO
 
 socketio = SocketIO()
+assets = Environment()
 
 
 def create_app():
@@ -18,9 +20,11 @@ def create_app():
     except OSError:
         pass
 
+    socketio.init_app(app)
+    assets.init_app(app)
+
     from flaskr.routes import app_routes
 
     app.register_blueprint(app_routes)
 
-    socketio.init_app(app)
     return app

@@ -1,4 +1,5 @@
-/static/dist
+flaskr/static/gen/
+flaskr/static/.webassets-cache/
 **/*.pt
 
 .venv/
