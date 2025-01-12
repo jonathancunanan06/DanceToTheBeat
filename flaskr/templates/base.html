@@ -8,6 +8,9 @@
             <script type="text/javascript" src="{{ ASSET_URL }}"></script>
         {% endassets %}
         {% block head %}{% endblock %}
+        {% assets output="gen/bundle.css", "style.css" %}
+            <link rel="stylesheet" href="{{ ASSET_URL }}">
+        {% endassets %}
     </head>
     <body hx-boost="true">
         {% block body %}{% endblock %}

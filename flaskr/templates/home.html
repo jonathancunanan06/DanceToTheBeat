@@ -6,7 +6,11 @@
 {% endblock %}
 {% block body %}
     <input type="file" id="video-upload" accept="video/mp4" />
-    <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime reprehenderit, neque reiciendis et deserunt accusantium eligendi, ipsum nulla corrupti qui, beatae nemo! Id adipisci porro voluptatum corporis in aliquam quasi!
-    </p>
+    {% for i in range(10) %}
+        <div>
+            <a href="/prepare/{{ i }}">
+                <img src="https://placehold.co/200x100" alt="">
+            </a>
+        </div>
+    {% endfor %}
 {% endblock %}
