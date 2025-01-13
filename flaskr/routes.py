@@ -1,13 +1,32 @@
-from flask import Blueprint, render_template, request
+import time
+
+from flask import Blueprint, render_template
 
 app_routes = Blueprint("app", __name__)
 
 
 @app_routes.route("/")
 def home():
-    return render_template("home.html", items=["vid1", "vid2"] )
+    return render_template("home.html", items=["vid1", "vid2"])
+
+
+@app_routes.route("/reference", methods=["POST"])
+def upload_video():
+    """
+    # TODO: return the reference id of the newly uploaded video
+    """
+    time.sleep(5)
+    return {"reference_id": 1}
 
 
 @app_routes.route("/dance")
 def dance():
     return render_template("dance.html")
+
+
+@app_routes.route("/reference/<reference_id>/steps", methods=["GET"])
+def get_reference_steps():
+    """
+    fetch steps from database
+    """
+    return {"steps": []}

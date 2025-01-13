@@ -1,281 +1,286 @@
 @font-face {
-    font-family: 'Montserrat Alternates';
-    src: url('../fonts/Montserrat_Alternates/MontserratAlternates-Regular.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
+  font-family: "Montserrat Alternates";
+  src: url("../fonts/Montserrat_Alternates/MontserratAlternates-Regular.ttf")
+    format("truetype");
+  font-weight: normal;
+  font-style: normal;
 }
 @font-face {
-    font-family: 'Monoton';
-    src: url('../fonts/Monoton/Monoton-Regular.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
+  font-family: "Monoton";
+  src: url("../fonts/Monoton/Monoton-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
 }
 
-body{
-    display: flex;
-    flex-direction: row;
-    font-family: 'Montserrat Alternates',sans-serif;
-    background: linear-gradient(to bottom, #EF60CC, #6E3892);
-    color: white;
-    height: 100vh;
-    overflow: hidden;
-    margin: 0;
+body {
+  display: flex;
+  flex-direction: row;
+  font-family: "Montserrat Alternates", sans-serif;
+  background: linear-gradient(to bottom, #ef60cc, #6e3892);
+  color: white;
+  height: 100vh;
+  overflow: hidden;
+  margin: 0;
 }
-.top .title{
-    position: absolute;
-    top: 0;
-    width: 100%;
-    display: flex;
+.top .title {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  display: flex;
 }
-.top .title p{
-    position:absolute ;
-    top: 0;
-    right: 100px;
-    font-size: 30px;
-    font-family: 'Monoton',sans-serif;
-    text-shadow: 10px 10px 20px rgba(0, 0, 0, 0.7);
+.top .title p {
+  position: absolute;
+  top: 0;
+  right: 100px;
+  font-size: 30px;
+  font-family: "Monoton", sans-serif;
+  text-shadow: 10px 10px 20px rgba(0, 0, 0, 0.7);
 }
-.menu{
-    position: relative;
-    width: 10%;
-    border-right: solid 3px white;
-    display: flex;
-    flex-direction: column;
-    height: auto;
-    margin-top: 50px;
-    margin-bottom: 50px;
-    align-items: center;
-    justify-content: center;
+.menu {
+  position: relative;
+  width: 10%;
+  border-right: solid 3px white;
+  display: flex;
+  flex-direction: column;
+  height: auto;
+  margin-top: 50px;
+  margin-bottom: 50px;
+  align-items: center;
+  justify-content: center;
 }
-.menu .menunav{
-    width: 50px;
-    height: 50px;
-    background: linear-gradient(to bottom, #EF60CC, #6E3892);
-    border:solid 1px #FF85DA;
-    margin: 30px;
-    border-radius: 10px;
-    display: flex;
-    justify-content: center;
-    cursor: pointer;
-    box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.7);
+.menu .menunav {
+  width: 50px;
+  height: 50px;
+  background: linear-gradient(to bottom, #ef60cc, #6e3892);
+  border: solid 1px #ff85da;
+  margin: 30px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.7);
 }
-.menu .menunav:hover{
-    box-shadow: 0px 10px 20px rgba(255, 255, 0, 0.7);
+.menu .menunav:hover {
+  box-shadow: 0px 10px 20px rgba(255, 255, 0, 0.7);
 }
-.menu .menunav:active{
-    opacity: 20%;
+.menu .menunav:active {
+  opacity: 20%;
 }
-.menunav:nth-of-type(1) img{
-    width: 50%;
-    height: auto;
+.menunav:nth-of-type(1) img {
+  width: 50%;
+  height: auto;
 }
-.menunav:nth-of-type(2) img{
-    width: 80%;
-    height: auto;
+.menunav:nth-of-type(2) img {
+  width: 80%;
+  height: auto;
 }
-.top{
-    display: flex;
-    flex-direction: column;
-    width: 90%;
-    height: 100vh;
-    position: relative;
-    justify-content: center;
+.top {
+  display: flex;
+  flex-direction: column;
+  width: 90%;
+  height: 100vh;
+  position: relative;
+  justify-content: center;
 }
-.top .recent{
-    font-size: 25px;
-    position: absolute;
-    top: 20px;
-    left: 50px;
-    height: 5px;
-    margin-left: 60px;
+.top .recent {
+  font-size: 25px;
+  position: absolute;
+  top: 20px;
+  left: 50px;
+  height: 5px;
+  margin-left: 60px;
 }
-.defvid{
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: row;
-    justify-content: left;
-    align-items: center;
-    position: relative;
-    overflow-y: scroll;
-    overflow: hidden;
-    height: 100%;
-    padding: 45px;
+.defvid {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: left;
+  align-items: center;
+  position: relative;
+  overflow-y: scroll;
+  overflow: hidden;
+  height: 100%;
+  padding: 45px;
 }
-.defvid #video-upload{
-    display: none;
+.defvid #video-upload {
+  display: none;
 }
-.defvid  .upload-icon{
-    width: 250px;
-    height: 150px;
-    background-color: gray;
-    border-radius: 20px;
-    margin-right: 50px ;
-    margin-left: 50px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
+.defvid .upload-icon {
+  width: 250px;
+  height: 150px;
+  background-color: gray;
+  border-radius: 20px;
+  margin-right: 50px;
+  margin-left: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
 }
-.defvid .upload-icon img{
-    width: 50px;
-    height: 50px;
+.defvid .upload-icon img {
+  width: 50px;
+  height: 50px;
+  box-shadow: none !important;
 }
+
 .defvid .vids {
-    width: 250px;
-    height: 150px;
-    border-radius: 20px;
-    margin: 50px;
-    transition: all .2s ease-in-out;
+  width: 250px;
+  height: 150px;
+  border-radius: 20px;
+  margin: 50px;
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
 }
-.defvid .vids img{
-    border-radius: 20px;
-    box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.5);
+.defvid .vids img {
+  border-radius: 20px;
+  box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.5);
 }
-.defvid .vids:hover{
-   transform: scale(.8);
-   color: yellow;
-   font-size: 25px;
+.defvid .vids:hover {
+  transform: scale(1.1);
 }
-.defvid .vids .des{
-    display: flex;
-    flex-direction: row;
-    position: relative;
-   align-items: center;
+
+.defvid .vids:active {
+  transform: scale(0.9);
 }
-.des .des1{
-    margin-right: auto;
+
+.defvid .vids .des {
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  align-items: center;
 }
-.des .des2{
-    margin-left:auto;
-    width: 20px;
-    height: 20px;
+.des .des1 {
+  margin-right: auto;
+}
+.des .des2 {
+  margin-left: auto;
+  width: 20px;
+  height: 20px;
 }
 
 /* Dance html*/
 
 .game > div {
-    display: flex;
+  display: flex;
 }
 
 .game.game--prepare > .prepare {
-    display: none;
+  display: none;
 }
-.prepare canvas{
-    display: none;
+.prepare canvas {
+  display: none;
 }
 
-.prepare .vidcamera{
-    width: 100vw;
-    height: 100vh;
-    transform: scaleX(-1);
-    object-fit: cover; 
+.prepare .vidcamera {
+  width: 100vw;
+  height: 100vh;
+  transform: scaleX(-1);
+  object-fit: cover;
 }
-.prepare .vidback{
-    z-index: 9999;
-    position: absolute;
-    right: 50px;
-    top: 50px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    opacity: 50%;
+.prepare .vidback {
+  z-index: 9999;
+  position: absolute;
+  right: 50px;
+  top: 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  opacity: 50%;
 }
-.prepare .vidback:hover{
-    opacity: 100%;
+.prepare .vidback:hover {
+  opacity: 100%;
 }
-.prepare .vidback img{
-    transform: rotate(90);
-    width: 60px;
-    height: 60px;
+.prepare .vidback img {
+  transform: rotate(90);
+  width: 60px;
+  height: 60px;
 }
-.prepare .status-text{
-    position: absolute;
-    z-index: 9999;
-    left:50px;
-    top: 50px;
+.prepare .status-text {
+  position: absolute;
+  z-index: 9999;
+  left: 50px;
+  top: 50px;
 }
 
 .game.game--dance > .dance {
-    display: none;
+  display: none;
 }
 
 /*Score Section  */
 
 .game.game--score > .score {
-    display: flex;
+  display: flex;
 }
 .score {
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 100vw;
-    height: 100vh;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
 }
-.score .topscore{
-    position: relative;
-    width: 80%;
-    height: 20%;
+.score .topscore {
+  position: relative;
+  width: 80%;
+  height: 20%;
 }
-.score .topscore{
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.score .topscore {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
-.score .topscore .topscore1{
-    margin-right: auto;
+.score .topscore .topscore1 {
+  margin-right: auto;
 }
-.score .topscore .topscore1 p{
-    font-family: 'Monoton',sans-serif;
+.score .topscore .topscore1 p {
+  font-family: "Monoton", sans-serif;
 }
-.score .topscore .topscore2{
-    margin-left: auto;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+.score .topscore .topscore2 {
+  margin-left: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
-.topscore2-star{
-    width: 150px;
-    margin-top: 50px;
-}
-
-.score .topscore p{
-    font-size: 30px;
-    margin:0;
-    padding: 0;
-}
-.score .midscore{
-    position: relative;
-    width: 100%;
-    height: 60%;
-}
-.score .botscore{
-    position: relative;
-    width: 100%;
-    height: 20%;
-}
-.score .botscore{
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    width: 80%;
-    border-top: solid 2px white;
-    font-size: 30px;
-}
-.botscore .botscore1{
-    margin-right: auto;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-}
-.botscore1 img{
-    width: 50px;
-}
-.botscore .botscore2{
-    margin-left: auto;
+.topscore2-star {
+  width: 150px;
+  margin-top: 50px;
 }
 
-
+.score .topscore p {
+  font-size: 30px;
+  margin: 0;
+  padding: 0;
+}
+.score .midscore {
+  position: relative;
+  width: 100%;
+  height: 60%;
+}
+.score .botscore {
+  position: relative;
+  width: 100%;
+  height: 20%;
+}
+.score .botscore {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 80%;
+  border-top: solid 2px white;
+  font-size: 30px;
+}
+.botscore .botscore1 {
+  margin-right: auto;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+.botscore1 img {
+  width: 50px;
+}
+.botscore .botscore2 {
+  margin-left: auto;
+}
