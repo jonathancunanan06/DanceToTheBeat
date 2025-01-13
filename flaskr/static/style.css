@@ -1,0 +1,109 @@
+@font-face {
+    font-family: 'Montserrat Alternates';
+    src: url('../fonts/Montserrat_Alternates/MontserratAlternates-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body{
+    display: flex;
+    flex-direction: row;
+    font-family: 'Montserrat Alternates',sans-serif;
+    background-color: #EA62D1;
+    color: white;
+    height: 100vh;
+    overflow: hidden;
+}
+.menu{
+    position: relative;
+    width: 10%;
+    border-right: solid 3px white;
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    height: auto;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    align-items: center;
+}
+.menu div:nth-of-type(3){
+    margin-bottom: auto;
+}
+.menu div:nth-of-type(4){
+    margin-top: auto;
+    margin-bottom: 20px;
+}
+.menu .menunav{
+    width: 50px;
+    height: 50px;
+    background-color:#f39be3;
+    border:solid 1px #FF85DA;
+    margin: 10px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+}
+.menu .menunav img{
+    width: 50%;
+    height: auto;
+}
+.top{
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    position: relative;
+    justify-content: center;
+}
+.top .recent{
+    font-size: 25px;
+    position: relative;
+    height: 5px;
+    margin-left: 100px;
+}
+.defvid{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+.defvid #video-upload{
+    display: none;
+}
+.defvid  .upload-icon{
+    width: 250px;
+    height: 150px;
+    background-color: gray;
+    border-radius: 20px;
+    margin-right: 50px ;
+    margin-left: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+.defvid .upload-icon img{
+    width: 50px;
+    height: 50px;
+}
+.defvid .vids {
+    width: 250px;
+    height: 150px;
+    border-radius: 20px;
+    margin: 50px;
+}
+.defvid .vids img{
+    border-radius: 20px;
+}
+.defvid .vids .des{
+    display: flex;
+    flex-direction: row;
+    position: relative;
+}
+.des .des1{
+    margin-right: auto;
+}
+.des .des2{
+    margin-left:auto;
+}
