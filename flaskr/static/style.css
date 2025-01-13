@@ -9,7 +9,7 @@ body{
     display: flex;
     flex-direction: row;
     font-family: 'Montserrat Alternates',sans-serif;
-    background-color: #EA62D1;
+    background: linear-gradient(to bottom, #EF60CC, #6E3892);
     color: white;
     height: 100vh;
     overflow: hidden;
@@ -19,32 +19,30 @@ body{
     width: 10%;
     border-right: solid 3px white;
     display: flex;
-    height: 100%;
     flex-direction: column;
     height: auto;
     margin-top: 50px;
     margin-bottom: 50px;
     align-items: center;
-}
-.menu div:nth-of-type(3){
-    margin-bottom: auto;
-}
-.menu div:nth-of-type(4){
-    margin-top: auto;
-    margin-bottom: 20px;
+    justify-content: center;
 }
 .menu .menunav{
     width: 50px;
     height: 50px;
     background-color:#f39be3;
     border:solid 1px #FF85DA;
-    margin: 10px;
+    margin: 30px;
     border-radius: 10px;
     display: flex;
     justify-content: center;
+    cursor: pointer;
 }
-.menu .menunav img{
+.menunav:nth-of-type(1) img{
     width: 50%;
+    height: auto;
+}
+.menunav:nth-of-type(2) img{
+    width: 80%;
     height: auto;
 }
 .top{
@@ -64,9 +62,10 @@ body{
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
-    justify-content: center;
+    justify-content: left;
     align-items: center;
     position: relative;
+    overflow-y: scroll;
 }
 .defvid #video-upload{
     display: none;

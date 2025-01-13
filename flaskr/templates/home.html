@@ -8,14 +8,21 @@
 
 
             <div class="menu">
+                <a href="{{ url_for('app.prepare') }}">
                     <div class="menunav">
                         <img src="{{url_for('static', filename='images/home-icon.svg')}}" alt="home" >
                     </div>
+                </a>
+                <a href="{{ url_for('app.prepare') }}" ></a>
                     <div class="menunav">
                         <img src="{{url_for('static', filename='images/favorite-icon.svg')}}" alt="favorite" >
                     </div>
-                    <div class="menunav"></div>
-                    <div class="menunav"></div>
+                </a>
+                <a href="{{ url_for('app.home') }}" ></a>
+                    <div class="menunav">
+                        <img src="{{url_for('static', filename='images/recent-icon.svg')}}" alt="recent" >
+                    </div>
+                </a>
             </div>
 
             <div class="top" id="top">
