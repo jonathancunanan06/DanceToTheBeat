@@ -24,7 +24,7 @@ function handleVideoUpload(event) {
     }),
   );
 
-  Turbo.visit("/prepare");
+  Turbo.visit("/dance");
 }
 
 document.addEventListener("turbo:load", () => {

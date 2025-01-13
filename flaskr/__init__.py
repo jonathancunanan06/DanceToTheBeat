@@ -27,10 +27,10 @@ def create_app():
     db.init_app(app)
 
     controllers = Bundle(
-        "main.js",
-        "controllers/*.js",
+        "controllers/index.js",
+        "controllers/*-controller.js",
         filters="jsmin",
-        output="controller.bundle.js",
+        output="gen/controller.bundle.js",
     )
     assets.register("controllers", controllers)
 

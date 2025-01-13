@@ -8,17 +8,6 @@ def home():
     return render_template("home.html", items=["vid1", "vid2"])
 
 
-@app_routes.route("/prepare")
-def prepare():
-    return render_template("prepare.html")
-
-
-@app_routes.route("/dance", methods=["POST"])
+@app_routes.route("/dance")
 def dance():
-    request.get_json()
-    return "Not implemented yet", 500
-
-
-@app_routes.route("/score", methods=["POST"])
-def score():
-    return "Not implemented yet", 500
+    return render_template("dance.html")

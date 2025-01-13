@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block body %}
+    <div data-controller="game"
+         data-game-prepare-class="game--prepare"
+         data-game-dance-class="game--dance"
+         data-game-score-class="game--score">
+        <canvas width="400" height="500" data-game-target="canvas" />
+        <video id="prepare-camera"
+               width="100%"
+               height="100%"
+               autoplay
+               style="transform: scaleX(-1);
+                      display: none"
+               data-game-target="camera">
+        </video>
+    </div>
+{% endblock %}
