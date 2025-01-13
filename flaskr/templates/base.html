@@ -1,18 +1,24 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Dance to the Beat</title>
-        {% assets filters="jsmin", output="gen/bundle.js", "dist/htmx.min.js" %}
-            <script type="text/javascript" src="{{ ASSET_URL }}"></script>
-        {% endassets %}
-        {% block head %}{% endblock %}
-        {% assets output="gen/bundle.css", "style.css" %}
-            <link rel="stylesheet" href="{{ ASSET_URL }}">
-        {% endassets %}
-    </head>
-    <body hx-boost="true">
-        {% block body %}{% endblock %}
-    </body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dance to the Beat</title>
+    <script type="importmap">
+      {
+        "imports": {
+          "stimulus": "{{ url_for('static', filename='dist/stimulus.min.js') }}"
+        }
+      }
+    </script>
+    <script src="{{ url_for('static', filename='dist/turbo.min.js')}}"></script>
+    {% assets 'controllers' %}
+    <script type="module" src="{{ ASSET_URL }}"></script>
+    {% endassets %} {% assets output="gen/bundle.css", "style.css" %}
+    <link rel="stylesheet" href="{{ ASSET_URL }}" />
+    {% endassets %} {% block head %}{% endblock %}
+  </head>
+  <body>
+    {% block body %}{% endblock %}
+  </body>
 </html>

@@ -22,6 +22,17 @@ def create_app():
 
     socketio.init_app(app)
     assets.init_app(app)
+    from flaskr import db
+
+    db.init_app(app)
+
+    controllers = Bundle(
+        "controllers/index.js",
+        "controllers/*-controller.js",
+        filters="jsmin",
+        output="gen/controller.bundle.js",
+    )
+    assets.register("controllers", controllers)
 
     from flaskr.routes import app_routes
 
