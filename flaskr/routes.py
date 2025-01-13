@@ -20,8 +20,9 @@ def upload_video():
 
 
 @app_routes.route("/dance")
-def dance():
-    return render_template("dance.html")
+@app_routes.route("/dance/<reference_id>")
+def dance(reference_id=None):
+    return render_template("dance.html", reference_id=reference_id)
 
 
 @app_routes.route("/reference/<reference_id>/steps", methods=["GET"])

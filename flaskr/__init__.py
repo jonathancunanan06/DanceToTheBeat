@@ -28,7 +28,8 @@ def create_app():
 
     controllers = Bundle(
         "controllers/index.js",
-        "controllers/*-controller.js",
+        "controllers/game-controller.js",
+        "controllers/home-controller.js",
         filters="jsmin",
         output="gen/controller.bundle.js",
     )

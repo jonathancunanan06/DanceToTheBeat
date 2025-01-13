@@ -14,7 +14,8 @@
     <script src="{{ url_for('static', filename='dist/turbo.min.js')}}"></script>
     {% assets 'controllers' %}
     <script type="module" src="{{ ASSET_URL }}"></script>
-    {% endassets %} {% assets output="gen/bundle.css", "style.css" %}
+    {% endassets %} {% assets output="gen/bundle.css", "dist/lds-ring.css",
+    "style.css" %}
     <link rel="stylesheet" href="{{ ASSET_URL }}" />
     {% endassets %} {% block head %}{% endblock %}
   </head>

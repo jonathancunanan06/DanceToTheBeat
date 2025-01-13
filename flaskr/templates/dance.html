@@ -1,60 +1,61 @@
 {% extends 'base.html' %}
 {% block body %}
-    <div  data-controller="game"
+    <div data-controller="game"
+         {% if reference_id is not none %}data-reference-id="{{ reference_id }}"{% endif %}
          data-game-prepare-class="game--prepare"
          data-game-dance-class="game--dance"
          data-game-score-class="game--score"
-         class="game"
-         >
-
-
-         <div class="prepare">
-              <canvas  data-game-target="canvas"></canvas>
-              <div class="status-text">
-                     <p>Uploading Video</p>
-              </div>
-              <div class="vidback">
-                     <a href="{{ url_for('app.home') }}" >
-                            <img src="{{url_for('static', filename='images/exit-icon.svg')}}" alt="upload video" >
-                     </a>
-                     <p>Press X to exit</p>
-              </div>
-              <video class="vidcamera" id="prepare-camera"
-                     autoplay
-                     data-game-target="camera">
-              </video>
-
-
-         </div>
-
-         <div class="dance">
-              <!-- TODO: DANCE -->
-         </div>
-
-
-         <div class="score">
-              <div class="topscore">
-                     <div class="topscore1">
-                            <p>Dance To The Beat</p>
-                     </div>
-                     <div class="topscore2">
-                            <img class="topscore2-star" src="{{url_for('static', filename='images/tripplestar-icon.svg')}}" alt="star" >
-                            <p>High Score</p>
-                     </div>
-              </div>
-              <div class="midscore">
-
-              </div>
-              <div class="botscore">
-                     <div class="botscore1">
-                            <p>Retry</p>
-                            <img class="topscore2-star" src="{{url_for('static', filename='images/retry-icon.svg')}}" alt="star" >
-                     </div>
-                     <div class="botscore2">
-                            <p>Main Menu</p>
-                     </div>
-              </div>
-         </div>
-       
+         class="game">
+        <div class="prepare">
+            <div class="status-text">
+                <div class="lds-ring loader" data-game-target="statusLoader">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+                <span data-game-target="statusText"></span>
+            </div>
+            <div class="vidback">
+                <a href="{{ url_for("app.home") }}">
+                    <img src="{{ url_for('static', filename='images/exit-icon.svg') }}"
+                         alt="upload video">
+                </a>
+                <p>Press X to exit</p>
+            </div>
+            <video class="vidcamera"
+                   id="prepare-camera"
+                   autoplay
+                   data-game-target="camera">
+            </video>
+        </div>
+        <div class="dance">
+            <!-- TODO: DANCE -->
+        </div>
+        <div class="score">
+            <div class="topscore">
+                <div class="topscore1">
+                    <p>Dance To The Beat</p>
+                </div>
+                <div class="topscore2">
+                    <img class="topscore2-star"
+                         src="{{ url_for('static', filename='images/tripplestar-icon.svg') }}"
+                         alt="star">
+                    <p>High Score</p>
+                </div>
+            </div>
+            <div class="midscore"></div>
+            <div class="botscore">
+                <div class="botscore1">
+                    <p>Retry</p>
+                    <img class="topscore2-star"
+                         src="{{ url_for('static', filename='images/retry-icon.svg') }}"
+                         alt="star">
+                </div>
+                <div class="botscore2">
+                    <p>Main Menu</p>
+                </div>
+            </div>
+        </div>
     </div>
 {% endblock %}
