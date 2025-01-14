@@ -65,12 +65,16 @@ body{
 .menu .menunav:active{
     opacity: 20%;
 }
-.menunav:nth-of-type(1) img{
+.menu .ok1{
     width: 50%;
     height: auto;
 }
-.menunav:nth-of-type(2) img{
-    width: 80%;
+.menu .ok2{
+    width: 70%;
+    height: auto;
+}
+.menu  .ok3 {
+    width: 90%;
     height: auto;
 }
 .top{
@@ -158,7 +162,7 @@ body{
 }
 
 .game.game--prepare > .prepare {
-    display: none;
+    display: flex;
 }
 .prepare canvas{
     display: none;
@@ -203,7 +207,7 @@ body{
 /*Score Section  */
 
 .game.game--score > .score {
-    display: flex;
+    display: none;
 }
 .score {
     flex-direction: column;
@@ -244,6 +248,7 @@ body{
     font-size: 30px;
     margin:0;
     padding: 0;
+    text-shadow: 10px 10px 20px rgba(0, 0, 0, 0.7);
 }
 .score .midscore{
     position: relative;
@@ -270,12 +275,27 @@ body{
     flex-direction: row;
     align-items: center;
     justify-content: center;
+    cursor: pointer;
+}
+.botscore a{
+    text-decoration: none;
+    color: white;
 }
 .botscore1 img{
-    width: 50px;
+    width: 40px;
+    margin-left: 10px;
 }
 .botscore .botscore2{
     margin-left: auto;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+.botscore2 img{
+    width: 40px;
+    margin-left: 10px;
 }
 
 

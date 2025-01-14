@@ -5,56 +5,63 @@
     {% endassets %}
 {% endblock %}
 {% block body %}
-
-
-            <div class="menu">
-                <a href="">
-                    <div class="menunav">
-                        <img src="{{url_for('static', filename='images/home-icon.svg')}}" alt="home" >
-                    </div>
-                </a>
-                <a href="" ></a>
-                    <div class="menunav">
-                        <img src="{{url_for('static', filename='images/favorite-icon.svg')}}" alt="favorite" >
-                    </div>
-                </a>
-                <a href="{{ url_for('app.home') }}" ></a>
-                    <div class="menunav">
-                        <img src="{{url_for('static', filename='images/recent-icon.svg')}}" alt="recent" >
-                    </div>
-                </a>
+    <div class="menu">
+        <a href="">
+            <div class="menunav">
+                <img class="ok1"
+                     src="{{ url_for('static', filename='images/home-icon.svg') }}"
+                     alt="home">
             </div>
-
-            <div class="top" id="top">
-                <div class="title">
-                    <p>Dance To The Beat</p>
-                </div>
-                <div class="recent">
-                    <p>Recents</p>
-                </div>
-                <div class="defvid" id="defvid">
-                        <input type="file" id="video-upload" accept="video/mp4" />
-                        <label for="video-upload" class="upload-icon">
-                            <img src="{{url_for('static', filename='images/upload-icon.svg')}}" alt="upload video" >
-                        </label>
-                    {% for i in range(5) %}
-                    <div class="vids">
-                        <a href="/prepare/{{ i }}">
-                            <img src="https://placehold.co/250x150" alt="">
-                        </a>
-                        <div class="des">
-                            <p class="des1">Sa Islang Pantropiko</p>
-                            <div class="stars">
-                                <img class="des2" src="{{url_for('static', filename='images/star-icon.svg')}}" alt="star" >
-                                <img class="des2" src="{{url_for('static', filename='images/star-icon.svg')}}" alt="star" >
-                                <img class="des2" src="{{url_for('static', filename='images/star-icon.svg')}}" alt="star" >
-                            </div>
+        </a>
+        <a href="">
+            <div class="menunav">
+                <img class="ok2"
+                     src="{{ url_for('static', filename='images/favorite-icon.svg') }}"
+                     alt="favorite">
+            </div>
+        </a>
+        <a href="{{ url_for("app.home") }}">
+            <div class="menunav">
+                <img class="ok3"
+                     src="{{ url_for('static', filename='images/recent-icon.svg') }}"
+                     alt="recent">
+            </div>
+        </a>
+    </div>
+    <div class="top" id="top">
+        <div class="title">
+            <p>Dance To The Beat</p>
+        </div>
+        <div class="recent">
+            <p>Recents</p>
+        </div>
+        <div class="defvid" id="defvid">
+            <input type="file" id="video-upload" accept="video/mp4" />
+            <label for="video-upload" class="upload-icon">
+                <img src="{{ url_for('static', filename='images/upload-icon.svg') }}"
+                     alt="upload video">
+            </label>
+            {% for i in range(5) %}
+                <div class="vids">
+                    <a href="/prepare/{{ i }}">
+                        <img src="https://placehold.co/250x150" alt="">
+                    </a>
+                    <div class="des">
+                        <p class="des1">Sa Islang Pantropiko</p>
+                        <div class="stars">
+                            <img class="des2"
+                                 src="{{ url_for('static', filename='images/star-icon.svg') }}"
+                                 alt="star">
+                            <img class="des2"
+                                 src="{{ url_for('static', filename='images/star-icon.svg') }}"
+                                 alt="star">
+                            <img class="des2"
+                                 src="{{ url_for('static', filename='images/star-icon.svg') }}"
+                                 alt="star">
                         </div>
                     </div>
-                    {% endfor %}
                 </div>
-            </div>
-    
-
-    
+            {% endfor %}
+        </div>
+    </div>
 {% endblock %}
