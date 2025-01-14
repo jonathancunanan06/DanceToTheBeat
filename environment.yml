@@ -31,10 +31,12 @@ dependencies:
   - eigen=3.4.0
   - expat=2.6.4
   - ffmpeg=4.2.3
+  - ffmpeg-python=0.2.0
   - filelock=3.13.1
   - fontconfig=2.14.1
   - fonttools=4.55.3
   - freetype=2.12.1
+  - future=1.0.0
   - gettext=0.22.5
   - gettext-tools=0.22.5
   - giflib=5.2.2
@@ -214,6 +216,8 @@ dependencies:
       - hyperframe==6.0.1
       - itsdangerous==2.2.0
       - jsmin==3.0.1
+      - lap==0.5.12
+      - opencv-contrib-python==4.10.0.84
       - priority==2.0.0
       - python-engineio==4.11.2
       - python-socketio==5.12.1

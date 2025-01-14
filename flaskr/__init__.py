@@ -24,9 +24,11 @@ def create_app():
 
     socketio.init_app(app)
     assets.init_app(app)
-    from flaskr import db
+
+    from flaskr import db, scripts
 
     db.init_app(app)
+    scripts.init_app(app)
 
     controllers = Bundle(
         "controllers/index.js",
