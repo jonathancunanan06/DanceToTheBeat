@@ -4,6 +4,8 @@ from flask import Flask
 from flask_assets import Bundle, Environment
 from flask_socketio import SocketIO
 
+from flaskr.dance import DanceNamespace
+
 socketio = SocketIO()
 assets = Environment()
 
@@ -38,5 +40,6 @@ def create_app():
     from flaskr.routes import app_routes
 
     app.register_blueprint(app_routes)
+    socketio.on_namespace(DanceNamespace("/dance"))
 
     return app

@@ -16,6 +16,7 @@ Stimulus.register(
 
       this.setPrepareStatus("Starting camera", true);
       await this.startCamera();
+      this.socket = io("/dance");
 
       if (this.element.dataset.referenceId === undefined) {
         await this.uploadVideo();
@@ -26,6 +27,10 @@ Stimulus.register(
     disconnect() {
       if (this.stream) {
         this.stream.getTracks().forEach((track) => track.stop());
+      }
+
+      if (this.socket) {
+        this.socket.disconnect();
       }
     }
 

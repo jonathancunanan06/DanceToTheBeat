@@ -12,10 +12,14 @@
       }
     </script>
     <script src="{{ url_for('static', filename='dist/turbo.min.js')}}"></script>
-    {% assets 'controllers' %}
+
+    {% assets filters="jsmin", output="gen/bundle.js", "dist/turbo.min.js",
+    "dist/socket.io.min.js" %}
+    <script src="{{ASSET_URL}}"></script>
+    {% endassets %} {% assets 'controllers' %}
     <script type="module" src="{{ ASSET_URL }}"></script>
-    {% endassets %} {% assets output="gen/bundle.css", "dist/lds-ring.css",
-    "style.css" %}
+    {% endassets %} {% assets filters="cssmin", output="gen/bundle.css",
+    "dist/lds-ring.css", "style.css" %}
     <link rel="stylesheet" href="{{ ASSET_URL }}" />
     {% endassets %} {% block head %}{% endblock %}
   </head>

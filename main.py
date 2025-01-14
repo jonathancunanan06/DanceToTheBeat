@@ -2,11 +2,7 @@
 
 from flaskr import create_app, socketio
 
-
-def main():
-    app = create_app()
-    socketio.run(app, debug=True)
-
+app = create_app()
 
 if __name__ == "__main__":
-    main()
+    socketio.run(app, debug=True)
