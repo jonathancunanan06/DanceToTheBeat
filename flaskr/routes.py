@@ -1,6 +1,7 @@
 import time
 
 from flask import Blueprint, current_app, render_template, send_file
+from ultralytics import YOLO
 from webassets.env import os
 
 import steps
@@ -35,14 +36,12 @@ def get_reference_video(reference_id):
 
 
 @app_routes.route("/reference/<reference_id>/steps", methods=["GET"])
-def get_reference_steps():
+def get_reference_steps(reference_id):
     path = os.path.join(current_app.instance_path, "Brazil.mp4")
     with open(path, "rb") as file:
         (_tempo, beats, _y, _sr) = steps.music.analyze_audio(file)
 
-    return send_file(path)
+    frames = steps.video.get_frames(path, beats) or []
+    result = steps.video.get_main_pose(YOLO("yolo11n-pose.pt"), frames, beats)
 
-    """
-    fetch steps from database
-    """
-    return {"steps": []}
+    return result

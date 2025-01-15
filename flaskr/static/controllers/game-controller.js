@@ -79,11 +79,10 @@ Stimulus.register(
       this.retryTarget.href = `/dance/${this.referenceId}`;
 
       this.setPrepareStatus("Loading reference video", true);
-      try {
-        await preloadVideo(this.referenceTarget, url);
-      } catch (e) {
-        alert(e);
-      }
+      await preloadVideo(this.referenceTarget, url);
+
+      this.setPrepareStatus("Fetching dance steps", true);
+      await this.fetchDanceSteps();
 
       this.socket = io("/dance");
       this.dispose.push(() => {
@@ -136,9 +135,14 @@ Stimulus.register(
       this.stateValue = "dance";
       this.referenceTarget.play();
 
+      let i = 0;
+
       this.referenceTarget.addEventListener("timeupdate", () => {
         const currentTime = this.referenceTarget.currentTime;
-        console.log(`Current Time: ${currentTime}`);
+        if (currentTime > this.steps[i][0]) {
+          this.sendDanceFrame(this.steps[i][0]);
+          ++i;
+        }
       });
 
       this.referenceTarget.addEventListener("ended", () => {
@@ -437,6 +441,11 @@ Stimulus.register(
       }
 
       drawBlurredBackground();
+    }
+
+    async fetchDanceSteps() {
+      const res = await fetch(`/reference/${this.referenceId}/steps`);
+      this.steps = await res.json();
     }
   },
 );
