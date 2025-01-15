@@ -29,6 +29,7 @@ Stimulus.register(
       "camera",
       "statusLoader",
       "statusText",
+      "retry",
     ];
     static classes = ["prepare", "dance", "score"];
 
@@ -70,10 +71,13 @@ Stimulus.register(
         localStorage.removeItem("prepare_page_target");
 
         url = prepareTarget.upload_file;
-        await this.uploadVideo(url);
+        this.referenceId = await this.uploadVideo(url);
       } else {
-        url = `/reference/${this.element.dataset.referenceId}`;
+        this.referenceId = this.element.dataset.referenceId;
+        url = `/reference/${this.referenceId}`;
       }
+      this.retryTarget.href = `/dance/${this.referenceId}`;
+
       this.setPrepareStatus("Loading reference video", true);
       try {
         await preloadVideo(this.referenceTarget, url);
@@ -250,10 +254,11 @@ Stimulus.register(
       formData.append("file", blob, "reference.mp4");
 
       this.setPrepareStatus("Uploading reference video", true);
-      return fetch("/reference", {
+      const resp = await fetch("/reference", {
         method: "POST",
         data: formData,
       });
+      return (await resp.json()).reference_id;
     }
 
     handleXPress(event) {
