@@ -454,21 +454,11 @@ body {
     right: 4rem;
   }
 
-  /* for game controller */
-  .game > div {
-    display: flex;
-  }
   /* dance screen */
-  .game.game--dance > .dance {
-    display: none;
-  }
   .midscore img {
     width: 100px;
   }
-  /* for prepare */
-  .game.game--prepare > .prepare {
-    display: none;
-  }
+
   .prepare .vidback {
     top: 40px;
     right: 20px;
@@ -477,10 +467,7 @@ body {
     width: 20px;
     height: 20px;
   }
-  /* for score */
-  .game.game--score > .score {
-    display: flex;
-  }
+
   .score .topscore {
   }
   .score .topscore .topscore1 p {
