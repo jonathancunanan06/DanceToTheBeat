@@ -1,10 +1,12 @@
-import time
+import json
 
-from flask import Blueprint, current_app, render_template, send_file
+from flask import Blueprint, current_app, render_template, request, send_file
 from ultralytics import YOLO
 from webassets.env import os
 
 import steps
+from flaskr.db import get_db
+from flaskr.videos import save_video
 
 app_routes = Blueprint("app", __name__)
 
@@ -22,26 +24,34 @@ def dance(reference_id=None):
 
 @app_routes.route("/reference", methods=["POST"])
 def upload_video():
-    """
-    # TODO: return the reference id of the newly uploaded video
-    """
-    time.sleep(5)
-    return {"reference_id": 1}
+    if "file" not in request.files:
+        return "No file part", 400
+    id = save_video(request.files["file"])
+
+    if id is None:
+        return "Failed to upload to database", 500
+
+    return {"reference_id": id}
 
 
-@app_routes.route("/reference/<reference_id>")
+@app_routes.route("/reference/<int:reference_id>")
 def get_reference_video(reference_id):
-    path = os.path.join(current_app.instance_path, "Brazil.mp4")
-    return send_file(path)
+    db = get_db()
+    cursor = db.cursor()
+    cursor.execute(
+        'SELECT filepath FROM "References" WHERE reference_id = ?', (reference_id,)
+    )
+    result = cursor.fetchone()
+    return send_file(result[0])
 
 
-@app_routes.route("/reference/<reference_id>/steps", methods=["GET"])
+@app_routes.route("/reference/<int:reference_id>/steps", methods=["GET"])
 def get_reference_steps(reference_id):
-    path = os.path.join(current_app.instance_path, "Brazil.mp4")
-    with open(path, "rb") as file:
-        (_tempo, beats, _y, _sr) = steps.music.analyze_audio(file)
-
-    frames = steps.video.get_frames(path, beats) or []
-    result = steps.video.get_main_pose(YOLO("yolo11n-pose.pt"), frames, beats)
-
-    return result
+    db = get_db()
+    cursor = db.cursor()
+    cursor.execute(
+        "SELECT timestamp, pose FROM Steps WHERE reference_id = ? ORDER BY timestamp ASC",
+        (reference_id,),
+    )
+    result = cursor.fetchall()
+    return [(r[0], json.loads(r[1])) for r in result]

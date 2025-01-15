@@ -69,9 +69,8 @@ Stimulus.register(
           return;
         }
         localStorage.removeItem("prepare_page_target");
-
         url = prepareTarget.upload_file;
-        this.referenceId = await this.uploadVideo(url);
+        this.referenceId = await this.uploadVideo(prepareTarget);
       } else {
         this.referenceId = this.element.dataset.referenceId;
         url = `/reference/${this.referenceId}`;
@@ -139,7 +138,7 @@ Stimulus.register(
 
       this.referenceTarget.addEventListener("timeupdate", () => {
         const currentTime = this.referenceTarget.currentTime;
-        if (currentTime > this.steps[i][0]) {
+        if (i < this.steps.length && currentTime > this.steps[i][0]) {
           this.sendDanceFrame(this.steps[i][0]);
           ++i;
         }
@@ -245,8 +244,8 @@ Stimulus.register(
       });
     }
 
-    async uploadVideo(url) {
-      const response = await fetch(url);
+    async uploadVideo({ upload_file, file_name }) {
+      const response = await fetch(upload_file);
       if (!response.ok) {
         console.error("Video doesn't exist");
         Turbo.visit("/", { action: replace });
@@ -255,12 +254,12 @@ Stimulus.register(
 
       const blob = await response.blob();
       const formData = new FormData();
-      formData.append("file", blob, "reference.mp4");
+      formData.append("file", blob, file_name);
 
       this.setPrepareStatus("Uploading reference video", true);
       const resp = await fetch("/reference", {
         method: "POST",
-        data: formData,
+        body: formData,
       });
       return (await resp.json()).reference_id;
     }

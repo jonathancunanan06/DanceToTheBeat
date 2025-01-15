@@ -16,10 +16,16 @@ def create_app():
         # Define config variables
         DATABASE=os.path.join(app.instance_path, "database.sqlite"),
         POSE_MODEL="yolo11n-pose.pt",
+        REFERENCES_FOLDER=os.path.join(app.instance_path, "references"),
     )
 
     try:
         os.makedirs(app.instance_path)
+    except OSError:
+        pass
+
+    try:
+        os.makedirs(app.config["REFERENCES_FOLDER"])
     except OSError:
         pass
 

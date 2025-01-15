@@ -1,11 +1,15 @@
 import json
+import os
+import shutil
 
 import click
 import cv2
-from flask import Flask
+from flask import Flask, current_app
 from ultralytics import YOLO
+from werkzeug.utils import secure_filename
 
 import steps
+from flaskr.videos import upload_reference
 from steps.video import track_pose
 
 
@@ -68,8 +72,21 @@ def get_pose_command(path):
     print(result)
 
 
+@click.command("upload-video")
+@click.argument("paths", nargs=-1)
+def upload_video_command(paths):
+    for p in paths:
+        filename = os.path.basename(p)
+        path = os.path.join(
+            current_app.config["REFERENCES_FOLDER"], secure_filename(filename)
+        )
+        shutil.copy(p, path)
+        upload_reference(path, filename, True)
+
+
 def init_app(app: Flask):
     app.cli.add_command(plot_beats_command)
     app.cli.add_command(show_steps_command)
     app.cli.add_command(show_pose_command)
     app.cli.add_command(get_pose_command)
+    app.cli.add_command(upload_video_command)
