@@ -39,6 +39,26 @@ def track_pose(model: YOLO, frames: List[MatLike]) -> Generator[Results, None, N
         yield result[0]
 
 
+def geom_pose(obj) -> Tuple[float, float, float, float]:
+    midX = (obj["box"]["x1"] + obj["box"]["x2"]) / 2
+    midY = (obj["box"]["y1"] + obj["box"]["y2"]) / 2
+    w = obj["box"]["x2"] - obj["box"]["x1"]
+    h = obj["box"]["y2"] - obj["box"]["y1"]
+    return (midX, midY, w, h)
+
+
+def normalize_pose(obj) -> List[Tuple[float, float, float]]:
+    keypoints = obj["keypoints"]
+
+    (midX, midY, _w, h) = geom_pose(obj)
+
+    x = [(x - midX) / h + 0.5 for x in keypoints["x"]]
+    y = [(y - midY) / h + 0.5 for y in keypoints["y"]]
+    visible = keypoints["visible"]
+
+    return list(zip(visible, x, y))
+
+
 def get_main_pose(
     model: YOLO,
     frames: List[MatLike],
@@ -51,8 +71,7 @@ def get_main_pose(
     for res in results:
         for obj in res:
             id = obj["track_id"]
-            midX = (obj["box"]["x1"] + obj["box"]["x2"]) / 2
-            midY = (obj["box"]["y1"] + obj["box"]["y2"]) / 2
+            (midX, midY, _, _) = geom_pose(obj)
             prevCenter = trackCenters.get(id)
             if prevCenter is None:
                 trackCenters[id] = (1, midX, midY)
@@ -84,12 +103,7 @@ def get_main_pose(
     for i, timestamp in enumerate(timestamps):
         for obj in results[i]:
             if obj["track_id"] == centerTrackId:
-                keypoints = obj["keypoints"]
-                x = keypoints["x"]
-                y = keypoints["y"]
-                visible = keypoints["visible"]
-
-                res.append((timestamp, list(zip(visible, x, y))))
+                res.append((timestamp, normalize_pose(obj)))
                 break
         else:
             if len(res) == 0:
@@ -97,5 +111,4 @@ def get_main_pose(
             else:
                 res.append((timestamp, res[-1][1]))
 
-    print(res[0])
     return res

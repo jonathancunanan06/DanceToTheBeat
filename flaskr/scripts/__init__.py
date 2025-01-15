@@ -62,6 +62,7 @@ def get_pose_command(path):
     with open(path, "rb") as file:
         (_tempo, beats, _y, _sr) = steps.music.analyze_audio(file)
 
+    beats = beats[:1]
     frames = steps.video.get_frames(path, beats) or []
     result = steps.video.get_main_pose(YOLO("yolo11n-pose.pt"), frames, beats)
     print(result)
