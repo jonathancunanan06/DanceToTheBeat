@@ -43,6 +43,7 @@ def home():
     """
 
     if sort_param == "recent":
+        label = "Recently played"
         # Order by the most recent session
         query = (
             base_query
@@ -55,6 +56,7 @@ def home():
         """
         )
     elif sort_param == "collection":
+        label = "Collection"
         # Show only selected references
         query = (
             base_query
@@ -64,6 +66,7 @@ def home():
         """
         )
     else:
+        label = "Home"
         # Default ordering by reference_id
         query = (
             base_query
@@ -88,7 +91,7 @@ def home():
         for video in videos
     ]
 
-    return render_template("home.html", videos=videos_data)
+    return render_template("home.html", videos=videos_data, label=label)
 
 
 @app_routes.route("/dance")
