@@ -1,6 +1,7 @@
 flaskr/static/gen/
 flaskr/static/.webassets-cache/
 **/*.pt
+djlint
 
 .venv/
 

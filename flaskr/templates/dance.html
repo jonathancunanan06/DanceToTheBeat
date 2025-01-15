@@ -48,13 +48,16 @@
             <div class="botscore">
                 <div class="botscore1">
                     <p>Retry</p>
-                    <img class="topscore2-star"
-                         src="{{ url_for('static', filename='images/retry-icon.svg') }}"
+                    <img src="{{ url_for('static', filename='images/retry-icon.svg') }}"
                          alt="star">
                 </div>
-                <div class="botscore2">
-                    <p>Main Menu</p>
-                </div>
+                <a href="{{ url_for("app.home") }}">
+                    <div class="botscore2">
+                        <p>Main Menu</p>
+                        <img src="{{ url_for('static', filename='images/mainmenu-icon.svg') }}"
+                             alt="star">
+                    </div>
+                </a>
             </div>
         </div>
     </div>

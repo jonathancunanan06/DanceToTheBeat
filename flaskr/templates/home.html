@@ -8,20 +8,25 @@
     <div class="menu">
         <a href="">
             <div class="menunav">
-                <img src="{{ url_for('static', filename='images/home-icon.svg') }}"
+                <img class="ok1"
+                     src="{{ url_for('static', filename='images/home-icon.svg') }}"
                      alt="home">
             </div>
         </a>
-        <a href=""></a>
-        <div class="menunav">
-            <img src="{{ url_for('static', filename='images/favorite-icon.svg') }}"
-                 alt="favorite">
-        </div>
-        <a href="{{ url_for("app.home") }}"></a>
-        <div class="menunav">
-            <img src="{{ url_for('static', filename='images/recent-icon.svg') }}"
-                 alt="recent">
-        </div>
+        <a href="">
+            <div class="menunav">
+                <img class="ok2"
+                     src="{{ url_for('static', filename='images/favorite-icon.svg') }}"
+                     alt="favorite">
+            </div>
+        </a>
+        <a href="{{ url_for("app.home") }}">
+            <div class="menunav">
+                <img class="ok3"
+                     src="{{ url_for('static', filename='images/recent-icon.svg') }}"
+                     alt="recent">
+            </div>
+        </a>
     </div>
     <div class="top" id="top" data-controller="home">
         <div class="title">
