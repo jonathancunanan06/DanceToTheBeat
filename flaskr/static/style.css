@@ -31,20 +31,17 @@ body {
 .top .title p {
   position: absolute;
   top: 0;
-  right: 100px;
-  font-size: 30px;
+  right: 11rem;
+  font-size: 1.4rem;
   font-family: "Monoton", sans-serif;
   text-shadow: 10px 10px 20px rgba(0, 0, 0, 0.7);
 }
 .menu {
   position: relative;
-  width: 10%;
   border-right: solid 3px white;
   display: flex;
   flex-direction: column;
   height: auto;
-  margin-top: 50px;
-  margin-bottom: 50px;
   align-items: center;
   justify-content: center;
 }
@@ -85,12 +82,13 @@ body {
   height: 100vh;
   position: relative;
   justify-content: center;
+  align-items: center;
 }
 .top .recent {
-  font-size: 25px;
+  font-size: 1.4rem;
   position: absolute;
-  top: 20px;
-  left: 50px;
+  top: 1.3rem;
+  left: 1.3rem;
   height: 5px;
   margin-left: 60px;
 }
@@ -98,13 +96,14 @@ body {
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
-  justify-content: left;
+  justify-content: flex-start;
   align-items: center;
   position: relative;
-  overflow-y: scroll;
-  overflow: hidden;
+  overflow-y: auto;
   height: 100%;
-  padding: 45px;
+  padding: 2rem;
+  gap: 1rem;
+  margin: 0;
 }
 .defvid .upload-icon {
   width: 250px;
@@ -118,6 +117,18 @@ body {
   align-items: center;
   cursor: pointer;
 }
+.defvid .upload-icon {
+  width: 250px;
+  height: 150px;
+  background-color: gray;
+  border-radius: 20px;
+  margin-right: 1.8rem;
+  margin-left: 1.8rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
 .defvid .upload-icon img {
   width: 50px;
   height: 50px;
@@ -125,10 +136,13 @@ body {
 }
 
 .defvid .vids {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   width: 250px;
   height: 150px;
   border-radius: 20px;
-  margin: 50px;
+  margin: 1.8rem;
   transition: all 0.2s ease-in-out;
   cursor: pointer;
   font-size: inherit;
@@ -142,28 +156,27 @@ body {
   border-radius: 20px;
   box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.5);
 }
-
-.defvid .vids:hover {
+<<<<<<< HEAD .defvid .vids:hover {
   transform: scale(1.1);
 }
 
 .defvid .vids:active {
   transform: scale(0.9);
 }
-
 .defvid .vids .des {
   display: flex;
   flex-direction: row;
-  position: relative;
   align-items: center;
+  justify-content: space-between;
 }
+
 .des .des1 {
   margin-right: auto;
 }
+
 .des .des2 {
   margin-left: auto;
-  width: 20px;
-  height: 20px;
+  width: 1.25rem;
 }
 
 /* Dance html*/
@@ -284,6 +297,7 @@ body {
 }
 .score .topscore .topscore1 p {
   font-family: "Monoton", sans-serif;
+  font-size: 1.8rem;
 }
 .score .topscore .topscore2 {
   margin-left: auto;
@@ -298,16 +312,49 @@ body {
 }
 
 .score .topscore p {
-  font-size: 30px;
+  font-size: 1.3rem;
   margin: 0;
   padding: 0;
   text-shadow: 10px 10px 20px rgba(0, 0, 0, 0.7);
 }
 .score .midscore {
   position: relative;
-  width: 100%;
+  width: 60%;
   height: 60%;
 }
+.midscore {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.midscore div {
+  margin: auto;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.midscore div img {
+  border-radius: 50%;
+}
+.midscore .midscore1 img {
+  border: solid 10px red;
+}
+.midscore .midscore2 {
+  margin-top: 20px;
+}
+.midscore2 .highest {
+  right: 0;
+}
+.midscore .midscore2 .pic {
+  border: solid 10px yellow;
+}
+.midscore .midscore3 img {
+  border: solid 10px purple;
+}
+
 .score .botscore {
   position: relative;
   width: 100%;
@@ -349,4 +396,104 @@ body {
 .botscore2 img {
   width: 40px;
   margin-left: 10px;
+}
+
+/* for responsiveness */
+@media only screen and (max-width: 700px) {
+  /* home */
+  body {
+    flex-direction: column-reverse;
+  }
+  .menu {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    flex-direction: row;
+    border-right: none;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    z-index: 9999;
+    padding: 0;
+    background: linear-gradient(to bottom, #ef60cc, #6e3892);
+  }
+  .menu .menunav {
+    padding: 0;
+    margin: 15px;
+  }
+  .defvid {
+    margin-top: 6rem;
+    justify-content: center;
+    padding-bottom: 20rem;
+  }
+  .defvid .vids {
+    transform: scale(0.8);
+    margin: 1rem;
+  }
+  .defvid .upload-icon {
+    transform: scale(0.8);
+    margin: 0.3rem;
+  }
+  .defvid .vids:hover {
+    font-size: 1rem;
+  }
+  .des {
+    display: flex;
+    flex-direction: row;
+  }
+  .top {
+    width: 100%;
+  }
+  .top .recent {
+    margin-top: 1.2rem;
+  }
+  .top .recent {
+    font-size: 20px;
+  }
+  .top .title p {
+    right: 4rem;
+  }
+
+  /* for game controller */
+  .game > div {
+    display: flex;
+  }
+  /* dance screen */
+  .game.game--dance > .dance {
+    display: none;
+  }
+  .midscore img {
+    width: 100px;
+  }
+  /* for prepare */
+  .game.game--prepare > .prepare {
+    display: none;
+  }
+  .prepare .vidback {
+    top: 40px;
+    right: 20px;
+  }
+  .prepare .vidback img {
+    width: 20px;
+    height: 20px;
+  }
+  /* for score */
+  .game.game--score > .score {
+    display: flex;
+  }
+  .score .topscore {
+  }
+  .score .topscore .topscore1 p {
+    font-size: 1rem;
+  }
+  .score .topscore .topscore2 p {
+    font-size: 1rem;
+  }
+  .score .topscore .topscore2 img {
+    width: 80px;
+  }
+  .score .midscore {
+  }
+  .score .botscore {
+  }
 }
