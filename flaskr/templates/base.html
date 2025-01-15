@@ -18,8 +18,7 @@
     <script src="{{ASSET_URL}}"></script>
     {% endassets %} {% assets 'controllers' %}
     <script type="module" src="{{ ASSET_URL }}"></script>
-    {% endassets %} {% assets filters="cssmin", output="gen/bundle.css",
-    "dist/lds-ring.css", "style.css" %}
+    {% endassets %} {% assets "styles" %}
     <link rel="stylesheet" href="{{ ASSET_URL }}" />
     {% endassets %} {% block head %}{% endblock %}
   </head>

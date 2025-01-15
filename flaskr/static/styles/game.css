@@ -1,0 +1,19 @@
+#debug-canvas {
+  position: absolute;
+  transform-origin: top left;
+  z-index: 1000;
+  scale: 0.25;
+  top: 16px;
+  left: 16px;
+  opacity: 0.4;
+  border-radius: 32px;
+}
+
+#debug-canvas:hover {
+  opacity: 1;
+  scale: 1;
+}
+
+.game > div {
+  display: none;
+}

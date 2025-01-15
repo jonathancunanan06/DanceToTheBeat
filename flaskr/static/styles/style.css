@@ -1,0 +1,30 @@
+@font-face {
+  font-family: "Montserrat Alternates";
+  src: url("../fonts/Montserrat_Alternates/MontserratAlternates-Regular.ttf")
+    format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Monoton";
+  src: url("../fonts/Monoton/Monoton-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+body {
+  display: flex;
+  flex-direction: row;
+  font-family: "Montserrat Alternates", sans-serif;
+  background: linear-gradient(to bottom, #ef60cc, #6e3892);
+  color: white;
+  height: 100vh;
+  overflow: hidden;
+  margin: 0;
+}
+
+@media only screen and (max-width: 700px) {
+  body {
+    flex-direction: column-reverse;
+  }
+}

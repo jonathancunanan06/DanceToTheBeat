@@ -23,7 +23,13 @@ Stimulus.register(
     static values = {
       state: { type: String, default: "prepare" },
     };
-    static targets = ["reference", "camera", "statusLoader", "statusText"];
+    static targets = [
+      "reference",
+      "referenceBg",
+      "camera",
+      "statusLoader",
+      "statusText",
+    ];
     static classes = ["prepare", "dance", "score"];
 
     initialize() {
@@ -49,10 +55,6 @@ Stimulus.register(
     async startPrepare() {
       this.setPrepareStatus("Starting camera", true);
       await this.startCamera();
-      this.socket = io("/dance");
-      this.dispose.push(() => {
-        this.socket.disconnect();
-      });
 
       let url = "";
       if (this.element.dataset.referenceId === undefined) {
@@ -79,6 +81,10 @@ Stimulus.register(
         alert(e);
       }
 
+      this.socket = io("/dance");
+      this.dispose.push(() => {
+        this.socket.disconnect();
+      });
       this.setPrepareStatus("Spread your arms wide to participate");
 
       /** @type {Map<number, {firstTPose: number, participating: boolean}>} */
@@ -124,7 +130,7 @@ Stimulus.register(
     startDance() {
       this.countdownTimer.stop();
       this.stateValue = "dance";
-      //this.referenceTarget.play();
+      this.referenceTarget.play();
 
       this.referenceTarget.addEventListener("timeupdate", () => {
         const currentTime = this.referenceTarget.currentTime;
@@ -134,6 +140,8 @@ Stimulus.register(
       this.referenceTarget.addEventListener("ended", () => {
         this.showScore();
       });
+
+      this.setupReferenceBg();
     }
 
     showScore() {
@@ -390,6 +398,22 @@ Stimulus.register(
           }
         }
       });
+    }
+
+    setupReferenceBg() {
+      const canvas = this.referenceBgTarget;
+      const video = this.referenceTarget;
+
+      const ctx = canvas.getContext("2d");
+
+      function drawBlurredBackground() {
+        canvas.width = canvas.parentElement.clientWidth;
+        canvas.height = canvas.parentElement.clientHeight;
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+        requestAnimationFrame(drawBlurredBackground);
+      }
+
+      drawBlurredBackground();
     }
   },
 );

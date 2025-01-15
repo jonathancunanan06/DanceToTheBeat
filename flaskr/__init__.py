@@ -39,6 +39,17 @@ def create_app():
         output="gen/controller.bundle.js",
     )
     assets.register("controllers", controllers)
+    styles = Bundle(
+        "dist/lds-ring.css",
+        "styles/style.css",
+        "styles/home.css",
+        "styles/game.css",
+        "styles/prepare.css",
+        "styles/dance.css",
+        "styles/score.css",
+        output="gen/styles.bundle.css",
+    )
+    assets.register("styles", styles)
 
     from flaskr.routes import app_routes
 
