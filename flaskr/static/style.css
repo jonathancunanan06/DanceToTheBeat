@@ -231,8 +231,29 @@ body {
   transform: scale(0.5) translateY(-75%);
 }
 
+/*Dance section */
 .game.game--dance > .dance {
   display: block;
+}
+
+.dance {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+}
+
+.dance-canvas {
+}
+
+.dance-video {
+  position: absolute;
+  z-index: 10;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  max-height: 100%;
+  max-width: 100%;
+  object-fit: contain;
 }
 
 /*Score Section  */

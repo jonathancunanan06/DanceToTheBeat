@@ -117,12 +117,14 @@ Stimulus.register(
         this.setPrepareStatus("Starting in " + s, false);
       });
       this.dispose.push(() => this.countdownTimer.stop());
+
+      this.countdownTimer.start(1);
     }
 
     startDance() {
       this.countdownTimer.stop();
       this.stateValue = "dance";
-      this.referenceTarget.play();
+      //this.referenceTarget.play();
 
       this.referenceTarget.addEventListener("timeupdate", () => {
         const currentTime = this.referenceTarget.currentTime;
