@@ -59,8 +59,12 @@ Stimulus.register(
 
       this.setPrepareStatus("Spread your arms wide to participate");
 
+      /** @type {Map<number, {firstTPose: number, participating: boolean}>} */
+      this.persons = new Map();
+
       this.socket.on("prepare_response", (response) => {
         const result = JSON.parse(response);
+        this.findPlayers(result);
         if (this.isDebug) this.drawResult(result);
         this.sendPrepareFrame();
       });
@@ -201,6 +205,32 @@ Stimulus.register(
     }
 
     /**
+     * @param {PoseEstimation} pose
+     * @param {number} index
+     * @returns {[x: number, y: number] | null}
+     */
+    getKeypoint(pose, index) {
+      if (pose.keypoints.visible < 0.5) return null;
+      return [pose.keypoints.x[index], pose.keypoints.y[index]];
+    }
+
+    /**
+     * @param {PoseEstimation} pose
+     * @param {number} from
+     * @param {number} to
+     * @returns {number|null}
+     */
+    getLength(pose, from, to) {
+      const a = this.getKeypoint(pose, from);
+      const b = this.getKeypoint(pose, to);
+      if (a === null || b === null) return null;
+
+      const difX = a[0] - b[0];
+      const difY = a[1] - b[1];
+      return Math.sqrt(difX * difX + difY * difY);
+    }
+
+    /**
      * @param {PoseEstimation[]} result
      */
     drawResult(result) {
@@ -233,7 +263,14 @@ Stimulus.register(
         context.font = "32px serif";
         context.fillText("Track ID: " + obj.track_id, obj.box.x1, obj.box.y1);
 
-        context.strokeStyle = "red";
+        if (!this.persons.has(obj.track_id)) {
+          context.strokeStyle = "red";
+        } else if (this.persons.get(obj.track_id).participating) {
+          context.strokeStyle = "green";
+        } else {
+          context.strokeStyle = "yellow";
+        }
+
         context.lineWidth = 8;
         context.strokeRect(
           obj.box.x1,
@@ -260,6 +297,46 @@ Stimulus.register(
           context.lineTo(obj.keypoints.x[b], obj.keypoints.y[b]);
         });
         context.stroke();
+      });
+    }
+
+    /**
+     * @param {PoseEstimation[]} result
+     */
+    findPlayers(result) {
+      result.forEach((obj) => {
+        const turso = this.getLength(obj, 12, 6) ?? this.getLength(obj, 11, 5);
+        if (!turso) return;
+
+        const points = [10, 8, 6, 5, 7, 9]
+          .map((i) => this.getKeypoint(obj, i))
+          .filter((i) => i !== null);
+        if (points.length === 0) return;
+
+        const minX = Math.min(...points.map((a) => a[0]));
+        const maxX = Math.max(...points.map((a) => a[0]));
+
+        if (maxX - minX > turso * 1.5) {
+          if (this.persons.has(obj.track_id)) {
+            const person = this.persons.get(obj.track_id);
+            if (Date.now() - person.firstTPose > 3000) {
+              this.persons.set(obj.track_id, {
+                firstTPose: Date.now(),
+                participating: true,
+              });
+            }
+          } else {
+            this.persons.set(obj.track_id, {
+              firstTPose: Date.now(),
+              participating: false,
+            });
+          }
+        } else {
+          if (!this.persons.has(obj.track_id)) return;
+          if (!this.persons.get(obj.track_id).participating) {
+            this.persons.delete(obj.track_id);
+          }
+        }
       });
     }
   },

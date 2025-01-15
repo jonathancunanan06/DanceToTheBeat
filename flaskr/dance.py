@@ -10,7 +10,6 @@ from ultralytics import YOLO
 class DanceNamespace(Namespace):
     def on_connect(self):
         model_config = current_app.config["POSE_MODEL"] or "yolo11n-pose.pt"
-        print(model_config)
         self.model = YOLO(model_config)
 
     def on_disconnect(self):

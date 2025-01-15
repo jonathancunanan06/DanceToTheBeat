@@ -181,6 +181,7 @@ body {
 
 #debug-canvas:hover {
   opacity: 1;
+  scale: 1;
 }
 
 .game > div {
