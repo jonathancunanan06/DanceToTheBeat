@@ -15,6 +15,7 @@ def create_app():
     app.config.from_mapping(
         # Define config variables
         DATABASE=os.path.join(app.instance_path, "database.sqlite"),
+        POSE_MODEL="yolo11n-pose.pt",
     )
 
     try:
@@ -34,7 +35,6 @@ def create_app():
         "controllers/index.js",
         "controllers/game-controller.js",
         "controllers/home-controller.js",
-        filters="jsmin",
         output="gen/controller.bundle.js",
     )
     assets.register("controllers", controllers)
