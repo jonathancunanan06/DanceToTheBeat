@@ -33,6 +33,7 @@ def create_app():
 
     controllers = Bundle(
         "controllers/index.js",
+        "util.js",
         "controllers/game-controller.js",
         "controllers/home-controller.js",
         output="gen/controller.bundle.js",

@@ -23,10 +23,11 @@ Stimulus.register(
     static values = {
       state: { type: String, default: "prepare" },
     };
-    static targets = ["camera", "statusLoader", "statusText"];
+    static targets = ["reference", "camera", "statusLoader", "statusText"];
     static classes = ["prepare", "dance", "score"];
 
     initialize() {
+      this.countdownTimer = new Countdown();
       this.dispose = [];
 
       this.canvas = document.createElement("canvas");
@@ -53,8 +54,29 @@ Stimulus.register(
         this.socket.disconnect();
       });
 
+      let url = "";
       if (this.element.dataset.referenceId === undefined) {
-        await this.uploadVideo();
+        const prepareTarget = JSON.parse(
+          localStorage.getItem("prepare_page_target"),
+        );
+
+        if (!prepareTarget) {
+          console.error("No video to upload");
+          Turbo.visit("/", { action: replace });
+          return;
+        }
+        localStorage.removeItem("prepare_page_target");
+
+        url = prepareTarget.upload_file;
+        await this.uploadVideo(url);
+      } else {
+        url = `/reference/${this.element.dataset.referenceId}`;
+      }
+      this.setPrepareStatus("Loading reference video", true);
+      try {
+        await preloadVideo(this.referenceTarget, url);
+      } catch (e) {
+        alert(e);
       }
 
       this.setPrepareStatus("Spread your arms wide to participate");
@@ -84,6 +106,36 @@ Stimulus.register(
       this.dispose.push(() =>
         document.removeEventListener("keydown", handlePress),
       );
+
+      this.countdownTimer.setOnFinish(() => {
+        this.setPrepareStatus("Dance!", false);
+        setTimeout(() => {
+          this.startDance();
+        }, 250);
+      });
+      this.countdownTimer.setOnSeconds((s) => {
+        this.setPrepareStatus("Starting in " + s, false);
+      });
+      this.dispose.push(() => this.countdownTimer.stop());
+    }
+
+    startDance() {
+      this.countdownTimer.stop();
+      this.stateValue = "dance";
+      this.referenceTarget.play();
+
+      this.referenceTarget.addEventListener("timeupdate", () => {
+        const currentTime = this.referenceTarget.currentTime;
+        console.log(`Current Time: ${currentTime}`);
+      });
+
+      this.referenceTarget.addEventListener("ended", () => {
+        this.showScore();
+      });
+    }
+
+    showScore() {
+      this.stateValue = "score";
     }
 
     async sendPrepareFrame() {
@@ -157,19 +209,8 @@ Stimulus.register(
       });
     }
 
-    async uploadVideo() {
-      const prepareTarget = JSON.parse(
-        localStorage.getItem("prepare_page_target"),
-      );
-
-      if (!prepareTarget) {
-        console.error("No video to upload");
-        Turbo.visit("/", { action: replace });
-        return;
-      }
-      localStorage.removeItem("prepare_page_target");
-
-      const response = await fetch(prepareTarget.upload_file);
+    async uploadVideo(url) {
+      const response = await fetch(url);
       if (!response.ok) {
         console.error("Video doesn't exist");
         Turbo.visit("/", { action: replace });
@@ -199,8 +240,16 @@ Stimulus.register(
 
       if (this.isDebug) {
         document.body.insertBefore(this.debugCanvas, document.body.firstChild);
+        window.registerTrackId = (id) => {
+          this.persons.set(id, {
+            firstTPose: Date.now() - 3000,
+            participating: true,
+          });
+          this.countdownTimer.start(3);
+        };
       } else {
         document.body.removeChild(this.debugCanvas);
+        delete window.registerTrackId;
       }
     }
 
@@ -321,9 +370,10 @@ Stimulus.register(
             const person = this.persons.get(obj.track_id);
             if (Date.now() - person.firstTPose > 3000) {
               this.persons.set(obj.track_id, {
-                firstTPose: Date.now(),
+                firstTPose: person.firstTPose,
                 participating: true,
               });
+              this.countdownTimer.start(3);
             }
           } else {
             this.persons.set(obj.track_id, {

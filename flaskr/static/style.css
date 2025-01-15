@@ -232,7 +232,7 @@ body {
 }
 
 .game.game--dance > .dance {
-  display: none;
+  display: block;
 }
 
 /*Score Section  */
