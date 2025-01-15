@@ -38,18 +38,36 @@
                     <p>High Score</p>
                 </div>
             </div>
-            <div class="midscore"></div>
+            <div class="midscore">
+                <div class="midscore1">
+                    <img src="https://placehold.co/150x150"
+                    alt="star">
+                    <p>80</p>
+                </div>
+                <div class="midscore2">
+                    <img class="highest" src="{{ url_for('static', filename='images/crown-icon.svg') }}" 
+                    alt="crown">
+                    <img class="pic" src="https://placehold.co/150x150"
+                    alt="star">
+                    <p>90</p>
+                </div>
+                <div class="midscore3">
+                    <img src="https://placehold.co/150x150"
+                    alt="star">
+                    <p>85</p>
+                </div>
+            </div>
             <div class="botscore">
                 <div class="botscore1">
                     <p>Retry</p>
                     <img src="{{ url_for('static', filename='images/retry-icon.svg') }}"
-                         alt="star">
+                         alt="retry">
                 </div>
                 <a href="{{ url_for("app.home") }}">
                     <div class="botscore2">
                         <p>Main Menu</p>
                         <img src="{{ url_for('static', filename='images/mainmenu-icon.svg') }}"
-                             alt="star">
+                             alt="mainmenu">
                     </div>
                 </a>
             </div>
