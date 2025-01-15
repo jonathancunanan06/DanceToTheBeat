@@ -3,6 +3,8 @@ import time
 from flask import Blueprint, current_app, render_template, send_file
 from webassets.env import os
 
+from flaskr.db import get_db
+
 app_routes = Blueprint("app", __name__)
 
 
@@ -18,12 +20,14 @@ def dance(reference_id=None):
 
 
 @app_routes.route("/reference", methods=["POST"])
-def upload_video():
+def upload_video(reference_id):
     """
     # TODO: return the reference id of the newly uploaded video
     """
+    db=get_db()
+    reference = db.execute("SELECT * FROM References WHERE reference_id = ?", (reference_id,)).fetchone()
     time.sleep(5)
-    return {"reference_id": 1}
+    return {"reference_id": reference["reference_id"]}
 
 
 @app_routes.route("/reference/<reference_id>")
