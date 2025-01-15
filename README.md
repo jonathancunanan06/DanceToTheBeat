@@ -21,3 +21,8 @@ A Just Dance clone that uses post estimation to score player made in partial ful
    ```sh
    python main.py
    ```
+4. Initialize the database
+
+   ```sh
+   flask --app flaskr init-db
+   ```

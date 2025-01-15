@@ -42,7 +42,6 @@ Stimulus.register(
       this.debugCanvas = document.createElement("canvas");
       this.debugCanvas.id = "debug-canvas";
       this.isDebug = false;
-      this.toggleDebug();
     }
 
     connect() {
@@ -65,12 +64,13 @@ Stimulus.register(
 
         if (!prepareTarget) {
           console.error("No video to upload");
-          Turbo.visit("/", { action: replace });
+          Turbo.visit("/", { action: "replace" });
           return;
         }
         localStorage.removeItem("prepare_page_target");
         url = prepareTarget.upload_file;
         this.referenceId = await this.uploadVideo(prepareTarget);
+        history.replaceState(null, "Dance", "/dance/" + this.referenceId);
       } else {
         this.referenceId = this.element.dataset.referenceId;
         url = `/reference/${this.referenceId}`;
@@ -125,8 +125,6 @@ Stimulus.register(
         this.setPrepareStatus("Starting in " + s, false);
       });
       this.dispose.push(() => this.countdownTimer.stop());
-
-      this.countdownTimer.start(1);
     }
 
     startDance() {
@@ -248,7 +246,7 @@ Stimulus.register(
       const response = await fetch(upload_file);
       if (!response.ok) {
         console.error("Video doesn't exist");
-        Turbo.visit("/", { action: replace });
+        Turbo.visit("/", { action: "replace" });
         return;
       }
 
