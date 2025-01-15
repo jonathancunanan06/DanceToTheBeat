@@ -65,11 +65,11 @@
                 </div>
             </div>
             <div class="botscore">
-                <div class="botscore1">
+                <a href="{{ request.url }}" class="botscore1">
                     <p>Retry</p>
                     <img src="{{ url_for('static', filename='images/retry-icon.svg') }}"
                          alt="retry">
-                </div>
+                </a>
                 <a href="{{ url_for("app.home") }}">
                     <div class="botscore2">
                         <p>Main Menu</p>

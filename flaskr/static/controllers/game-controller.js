@@ -166,6 +166,24 @@ Stimulus.register(
       this.socket.emit("prepare", data);
     }
 
+    async sendDanceFrame(timestamp) {
+      if (this.stateValue !== "dance") return;
+
+      const context = this.canvas.getContext("2d");
+      context.drawImage(
+        this.cameraTarget,
+        0,
+        0,
+        this.canvas.width,
+        this.canvas.height,
+      );
+      const data = this.canvas
+        .toDataURL("image/jpeg")
+        .replace("data:image/jpeg;base64,", "");
+
+      this.socket.emit("dance", data, timestamp);
+    }
+
     disconnect() {
       this.dispose.forEach((callback) => {
         callback();

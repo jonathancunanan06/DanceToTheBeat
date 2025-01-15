@@ -3,6 +3,8 @@ import time
 from flask import Blueprint, current_app, render_template, send_file
 from webassets.env import os
 
+import steps
+
 app_routes = Blueprint("app", __name__)
 
 
@@ -34,6 +36,12 @@ def get_reference_video(reference_id):
 
 @app_routes.route("/reference/<reference_id>/steps", methods=["GET"])
 def get_reference_steps():
+    path = os.path.join(current_app.instance_path, "Brazil.mp4")
+    with open(path, "rb") as file:
+        (_tempo, beats, _y, _sr) = steps.music.analyze_audio(file)
+
+    return send_file(path)
+
     """
     fetch steps from database
     """
