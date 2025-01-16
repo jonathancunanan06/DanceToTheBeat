@@ -23,7 +23,7 @@ CREATE TABLE "Sessions" (
 CREATE TABLE "Dancers" (
   "dancer_id" INTEGER PRIMARY KEY AUTOINCREMENT,
   "session_id" INTEGER NOT NULL,
-  "avatar" BLOB NOT NULL,
+  "avatar" BLOB,
   "score" INTEGER NOT NULL,
   FOREIGN KEY ("session_id") REFERENCES "Sessions" ("session_id")
 );

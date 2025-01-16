@@ -3,6 +3,7 @@ from math import sqrt
 from typing import Dict, Generator, List, Tuple
 
 import cv2
+import numpy as np
 from cv2.typing import MatLike
 from numpy._typing import NDArray
 from ultralytics import YOLO
@@ -107,8 +108,57 @@ def get_main_pose(
                 break
         else:
             if len(res) == 0:
-                res.append((timestamp, [(0.0, 0.0, 0.0)] * 17))
+                res.append((timestamp, [(0.0, 0.5, 0.5)] * 17))
             else:
                 res.append((timestamp, res[-1][1]))
 
     return res
+
+
+def grade_poses(pose_a, pose_b, scaling_factor=1.0):
+    pose_a = np.array(pose_a)
+    pose_b = np.array(pose_b)
+
+    for pose in [pose_a, pose_b]:
+        low_confidence_mask = pose[:, 0] < 0.5
+        pose[low_confidence_mask, 1:] = 0.5
+
+    keypoint_weights = {
+        0: 2,  # nose
+        1: 2,  # left eye
+        2: 2,  # right eye
+        3: 2,  # left ear
+        4: 2,  # right ear
+        5: 12,  # left shoulder
+        6: 12,  # right shoulder
+        7: 8,  # left elbow
+        8: 8,  # right elbow
+        9: 8,  # left wrist
+        10: 8,  # right wrist
+        11: 12,  # left hip
+        12: 12,  # right hip
+        13: 6,  # left knee
+        14: 6,  # right knee
+        15: 4,  # left ankle
+        16: 4,  # right ankle
+    }
+
+    scores = []
+    for i in range(17):
+        weight = keypoint_weights[i]
+
+        if pose_a[i, 0] >= 0.5 or pose_b[i, 0] >= 0.5:
+            distance = np.sqrt(np.sum((pose_a[i, 1:] - pose_b[i, 1:]) ** 2))
+            similarity = np.exp(-distance * 2) * weight
+
+            confidence_factor = (pose_a[i, 0] + pose_b[i, 0]) / 2
+            similarity = similarity * confidence_factor * scaling_factor
+
+            scores.append(similarity)
+        else:
+            scores.append(weight * 0.5 * scaling_factor)
+
+    final_score = sum(scores)
+    final_score = min(max(final_score, 0), 100)
+
+    return round(final_score, 2)

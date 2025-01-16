@@ -89,7 +89,7 @@ Stimulus.register(
       });
       this.setPrepareStatus("Spread your arms wide to participate");
 
-      /** @type {Map<number, {firstTPose: number, participating: boolean}>} */
+      /** @type {Map<number, {firstTPose: number, participating: boolean, img: string}>} */
       this.persons = new Map();
 
       this.socket.on("prepare_response", (response) => {
@@ -116,6 +116,10 @@ Stimulus.register(
       );
 
       this.countdownTimer.setOnFinish(() => {
+        const dancers = [...this.persons.entries()]
+          .filter((v) => v[1].participating)
+          .map((v) => [v[0], v[1].img]);
+        this.socket.emit("register", this.referenceId, dancers);
         this.setPrepareStatus("Dance!", false);
         setTimeout(() => {
           this.startDance();
@@ -125,6 +129,9 @@ Stimulus.register(
         this.setPrepareStatus("Starting in " + s, false);
       });
       this.dispose.push(() => this.countdownTimer.stop());
+
+      this.toggleDebug();
+      this.countdownTimer.start(1);
     }
 
     startDance() {
@@ -186,6 +193,9 @@ Stimulus.register(
         .toDataURL("image/jpeg")
         .replace("data:image/jpeg;base64,", "");
 
+      this.socket.on("dance_response", (response) => {
+        if (this.isDebug) this.drawDanceResult(response);
+      });
       this.socket.emit("dance", data, timestamp);
     }
 
@@ -278,6 +288,7 @@ Stimulus.register(
           this.persons.set(id, {
             firstTPose: Date.now() - 3000,
             participating: true,
+            img: null,
           });
           this.countdownTimer.start(3);
         };
@@ -383,6 +394,27 @@ Stimulus.register(
       });
     }
 
+    drawDanceResult(response) {
+      this.debugCanvas.width = this.canvas.width;
+      this.debugCanvas.height = this.canvas.height;
+
+      const context = this.debugCanvas.getContext("2d");
+      context.fillStyle = "white";
+      context.fillRect(0, 0, this.debugCanvas.width, this.debugCanvas.height);
+
+      drawStickFigure(context, response.step, 0, "green");
+      const dancer = Object.values(response.dancers)[0];
+
+      if (dancer) {
+        drawStickFigure(
+          context,
+          dancer.pose,
+          this.debugCanvas.width / 2,
+          "green",
+        );
+      }
+    }
+
     /**
      * @param {PoseEstimation[]} result
      */
@@ -399,13 +431,24 @@ Stimulus.register(
         const minX = Math.min(...points.map((a) => a[0]));
         const maxX = Math.max(...points.map((a) => a[0]));
 
-        if (maxX - minX > turso * 1.5) {
+        if (maxX - minX > turso * 2.5) {
           if (this.persons.has(obj.track_id)) {
             const person = this.persons.get(obj.track_id);
             if (Date.now() - person.firstTPose > 3000) {
+              const center = this.getKeypoint(obj, 0);
+              const halfLength = this.getLength(obj, 2, 1) * 1.5;
+
+              const img = crop(this.canvas, {
+                x: center[0] - halfLength,
+                y: center[1] - halfLength,
+                width: halfLength * 2,
+                height: halfLength * 2,
+              });
+
               this.persons.set(obj.track_id, {
                 firstTPose: person.firstTPose,
                 participating: true,
+                img: img,
               });
               this.countdownTimer.start(3);
             }

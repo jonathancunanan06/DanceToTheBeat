@@ -1,10 +1,9 @@
-import json
 from io import BytesIO
 
 from flask import Blueprint, render_template, request, send_file
 
 from flaskr.db import get_db
-from flaskr.videos import save_video
+from flaskr.videos import get_steps, save_video
 
 app_routes = Blueprint("app", __name__)
 
@@ -136,11 +135,4 @@ def get_reference_thumbnail(reference_id):
 
 @app_routes.route("/reference/<int:reference_id>/steps", methods=["GET"])
 def get_reference_steps(reference_id):
-    db = get_db()
-    cursor = db.cursor()
-    cursor.execute(
-        "SELECT timestamp, pose FROM Steps WHERE reference_id = ? ORDER BY timestamp ASC",
-        (reference_id,),
-    )
-    result = cursor.fetchall()
-    return [(r[0], json.loads(r[1])) for r in result]
+    return get_steps(reference_id)

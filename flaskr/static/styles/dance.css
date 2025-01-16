@@ -13,6 +13,7 @@
   inset: 0;
   position: absolute;
   filter: blur(15px);
+  transform: scaleX(-1);
 }
 
 .dance-overlay {
@@ -28,7 +29,7 @@
   z-index: 10;
   top: 50%;
   left: 50%;
-  transform: translateX(-50%) translateY(-50%);
+  transform: translateX(-50%) translateY(-50%) scaleX(-1);
   max-height: 100%;
   max-width: 100%;
   object-fit: contain;

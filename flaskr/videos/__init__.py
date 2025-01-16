@@ -57,3 +57,14 @@ def upload_reference(path: str, filename: str, selection=False):
     db.commit()
 
     return reference_id
+
+
+def get_steps(reference_id: int):
+    db = get_db()
+    cursor = db.cursor()
+    cursor.execute(
+        "SELECT timestamp, pose FROM Steps WHERE reference_id = ? ORDER BY timestamp ASC",
+        (reference_id,),
+    )
+    result = cursor.fetchall()
+    return [(r[0], json.loads(r[1])) for r in result]
