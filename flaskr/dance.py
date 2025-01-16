@@ -108,3 +108,20 @@ class DanceNamespace(Namespace):
             register_dancer(dancer)
 
         db.commit()
+
+    def on_finished(self):
+        db = get_db()
+        cursor = db.cursor()
+
+        scores = dict()
+        for k, v in self.game_state.items():
+            print(k, v)
+            final_score = v[1] / self.frames
+            cursor.execute(
+                'UPDATE "Dancers" SET score = ? WHERE dancer_id = ?',
+                (int(min(max(final_score, 0), 100)), v[0]),
+            )
+            scores[k] = final_score
+
+        db.commit()
+        emit("scores", scores)

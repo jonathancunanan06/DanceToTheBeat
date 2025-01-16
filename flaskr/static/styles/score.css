@@ -69,6 +69,8 @@
 }
 .midscore .midscore1 img {
   border: solid 10px #f7ff05;
+  width: 128px;
+  height: 128px;
 }
 .midscore .midscore2 {
   margin-top: 20px;

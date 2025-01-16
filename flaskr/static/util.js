@@ -73,9 +73,7 @@ function crop(canvas, cropRegion) {
   croppedContext.drawImage(canvas, x, y, width, height, 0, 0, width, height);
 
   // Get the base64 encoded JPEG image
-  return croppedCanvas
-    .toDataURL("image/jpeg")
-    .replace("data:image/jpeg;base64,", "");
+  return croppedCanvas.toDataURL("image/jpeg");
 }
 
 function drawStickFigure(ctx, pose, offsetX, color) {

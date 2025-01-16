@@ -30,6 +30,7 @@ Stimulus.register(
       "statusLoader",
       "statusText",
       "retry",
+      "score",
     ];
     static classes = ["prepare", "dance", "score"];
 
@@ -118,7 +119,7 @@ Stimulus.register(
       this.countdownTimer.setOnFinish(() => {
         const dancers = [...this.persons.entries()]
           .filter((v) => v[1].participating)
-          .map((v) => [v[0], v[1].img]);
+          .map((v) => [v[0], v[1].img.replace("data:image/jpeg;base64,", "")]);
         this.socket.emit("register", this.referenceId, dancers);
         this.setPrepareStatus("Dance!", false);
         setTimeout(() => {
@@ -129,9 +130,6 @@ Stimulus.register(
         this.setPrepareStatus("Starting in " + s, false);
       });
       this.dispose.push(() => this.countdownTimer.stop());
-
-      this.toggleDebug();
-      this.countdownTimer.start(1);
     }
 
     startDance() {
@@ -158,6 +156,26 @@ Stimulus.register(
 
     showScore() {
       this.stateValue = "score";
+      const dancers = [...this.persons.entries()].filter(
+        (v) => v[1].participating,
+      );
+
+      this.socket.on("scores", (scores) => {
+        dancers.forEach(([trackId, data]) => {
+          const clone = this.scoreTarget.content.cloneNode(true);
+
+          if (data.img) {
+            clone.querySelector(".-img").src = data.img;
+          }
+          clone.querySelector(".-score").innerText = Math.round(
+            scores[trackId],
+          );
+
+          this.scoreTarget.parentElement.appendChild(clone);
+        });
+      });
+
+      this.socket.emit("finished");
     }
 
     async sendPrepareFrame() {
@@ -431,7 +449,7 @@ Stimulus.register(
         const minX = Math.min(...points.map((a) => a[0]));
         const maxX = Math.max(...points.map((a) => a[0]));
 
-        if (maxX - minX > turso * 2.5) {
+        if (maxX - minX > turso * 1.5) {
           if (this.persons.has(obj.track_id)) {
             const person = this.persons.get(obj.track_id);
             if (Date.now() - person.firstTPose > 3000) {

@@ -48,18 +48,14 @@
                 </div>
             </div>
             <div class="midscore">
-                <div class="midscore1">
-                    <img src="https://placehold.co/150x150" alt="star">
-                    <p>80</p>
-                </div>
-                <div class="midscore1">
-                    <img src="https://placehold.co/150x150" alt="star">
-                    <p>80</p>
-                </div>
-                <div class="midscore1">
-                    <img src="https://placehold.co/150x150" alt="star">
-                    <p>80</p>
-                </div>
+                <template data-game-target="score">
+                    <div class="midscore1">
+                        <img class="-img"
+                             src="{{ url_for('static', filename='images/tripplestar-icon.svg') }}"
+                             alt="star">
+                        <p class="-score"></p>
+                    </div>
+                </template>
             </div>
             <div class="botscore">
                 <a href="{{ request.url }}" class="botscore1" data-game-target="retry">
