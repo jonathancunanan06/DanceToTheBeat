@@ -1,0 +1,151 @@
+.game.game--score > .score {
+  display: flex;
+}
+
+.score {
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+}
+.score .topscore {
+  position: relative;
+  width: 80%;
+  height: 20%;
+}
+.score .topscore {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.score .topscore .topscore1 {
+  margin-right: auto;
+}
+.score .topscore .topscore1 p {
+  font-family: "Monoton", sans-serif;
+  font-size: 1.8rem;
+}
+.score .topscore .topscore2 {
+  margin-left: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.topscore2-star {
+  width: 150px;
+  margin-top: 50px;
+}
+
+.score .topscore p {
+  font-size: 1.3rem;
+  margin: 0;
+  padding: 0;
+  text-shadow: 10px 10px 20px rgba(0, 0, 0, 0.7);
+}
+.score .midscore {
+  position: relative;
+  width: 60%;
+  height: 60%;
+}
+.midscore {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin-inline: 16px;
+}
+.midscore div {
+  margin: auto;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.midscore div img {
+  border-radius: 50%;
+}
+.midscore .midscore1 img {
+  border: solid 10px #f7ff05;
+  width: 128px;
+  height: 128px;
+}
+.midscore .midscore2 {
+  margin-top: 20px;
+}
+.midscore2 .highest {
+  right: 0;
+}
+.midscore .midscore2 .pic {
+  border: solid 10px yellow;
+}
+.midscore .midscore3 img {
+  border: solid 10px purple;
+}
+
+.score .botscore {
+  position: relative;
+  width: 100%;
+  height: 20%;
+}
+.score .botscore {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 80%;
+  border-top: solid 2px white;
+  font-size: 30px;
+}
+.botscore .botscore1 {
+  margin-right: auto;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.botscore a {
+  text-decoration: none;
+  color: white;
+}
+.botscore1 img {
+  width: 40px;
+  margin-left: 10px;
+}
+.botscore .botscore2 {
+  margin-left: auto;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.botscore2 img {
+  width: 40px;
+  margin-left: 10px;
+}
+
+@media only screen and (max-width: 700px) {
+  .midscore img {
+    width: 100px;
+  }
+
+  .score .topscore {
+  }
+  .score .topscore .topscore1 p {
+    font-size: 1rem;
+  }
+  .score .topscore .topscore2 p {
+    font-size: 1rem;
+  }
+  .score .topscore .topscore2 img {
+    width: 80px;
+  }
+  .score .midscore {
+  }
+  .score .botscore {
+  }
+}

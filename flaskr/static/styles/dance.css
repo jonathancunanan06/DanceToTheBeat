@@ -1,0 +1,36 @@
+.game.game--dance > .dance {
+  display: block;
+}
+
+.dance {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+}
+
+.dance-bg {
+  z-index: 0;
+  inset: 0;
+  position: absolute;
+  filter: blur(15px);
+  transform: scaleX(-1);
+}
+
+.dance-overlay {
+  z-index: 5;
+  inset: 0;
+  position: absolute;
+  background: linear-gradient(to bottom, #a6358b, #321742);
+  opacity: 0.7;
+}
+
+.dance-video {
+  position: absolute;
+  z-index: 10;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%) scaleX(-1);
+  max-height: 100%;
+  max-width: 100%;
+  object-fit: contain;
+}

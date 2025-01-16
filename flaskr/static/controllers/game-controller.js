@@ -23,7 +23,15 @@ Stimulus.register(
     static values = {
       state: { type: String, default: "prepare" },
     };
-    static targets = ["reference", "camera", "statusLoader", "statusText"];
+    static targets = [
+      "reference",
+      "referenceBg",
+      "camera",
+      "statusLoader",
+      "statusText",
+      "retry",
+      "score",
+    ];
     static classes = ["prepare", "dance", "score"];
 
     initialize() {
@@ -35,7 +43,6 @@ Stimulus.register(
       this.debugCanvas = document.createElement("canvas");
       this.debugCanvas.id = "debug-canvas";
       this.isDebug = false;
-      this.toggleDebug();
     }
 
     connect() {
@@ -49,10 +56,6 @@ Stimulus.register(
     async startPrepare() {
       this.setPrepareStatus("Starting camera", true);
       await this.startCamera();
-      this.socket = io("/dance");
-      this.dispose.push(() => {
-        this.socket.disconnect();
-      });
 
       let url = "";
       if (this.element.dataset.referenceId === undefined) {
@@ -62,26 +65,32 @@ Stimulus.register(
 
         if (!prepareTarget) {
           console.error("No video to upload");
-          Turbo.visit("/", { action: replace });
+          Turbo.visit("/", { action: "replace" });
           return;
         }
         localStorage.removeItem("prepare_page_target");
-
         url = prepareTarget.upload_file;
-        await this.uploadVideo(url);
+        this.referenceId = await this.uploadVideo(prepareTarget);
+        history.replaceState(null, "Dance", "/dance/" + this.referenceId);
       } else {
-        url = `/reference/${this.element.dataset.referenceId}`;
+        this.referenceId = this.element.dataset.referenceId;
+        url = `/reference/${this.referenceId}`;
       }
-      this.setPrepareStatus("Loading reference video", true);
-      try {
-        await preloadVideo(this.referenceTarget, url);
-      } catch (e) {
-        alert(e);
-      }
+      this.retryTarget.href = `/dance/${this.referenceId}`;
 
+      this.setPrepareStatus("Loading reference video", true);
+      await preloadVideo(this.referenceTarget, url);
+
+      this.setPrepareStatus("Fetching dance steps", true);
+      await this.fetchDanceSteps();
+
+      this.socket = io("/dance");
+      this.dispose.push(() => {
+        this.socket.disconnect();
+      });
       this.setPrepareStatus("Spread your arms wide to participate");
 
-      /** @type {Map<number, {firstTPose: number, participating: boolean}>} */
+      /** @type {Map<number, {firstTPose: number, participating: boolean, img: string}>} */
       this.persons = new Map();
 
       this.socket.on("prepare_response", (response) => {
@@ -108,6 +117,10 @@ Stimulus.register(
       );
 
       this.countdownTimer.setOnFinish(() => {
+        const dancers = [...this.persons.entries()]
+          .filter((v) => v[1].participating)
+          .map((v) => [v[0], v[1].img.replace("data:image/jpeg;base64,", "")]);
+        this.socket.emit("register", this.referenceId, dancers);
         this.setPrepareStatus("Dance!", false);
         setTimeout(() => {
           this.startDance();
@@ -117,27 +130,52 @@ Stimulus.register(
         this.setPrepareStatus("Starting in " + s, false);
       });
       this.dispose.push(() => this.countdownTimer.stop());
-
-      this.countdownTimer.start(1);
     }
 
     startDance() {
       this.countdownTimer.stop();
       this.stateValue = "dance";
-      //this.referenceTarget.play();
+      this.referenceTarget.play();
+
+      let i = 0;
 
       this.referenceTarget.addEventListener("timeupdate", () => {
         const currentTime = this.referenceTarget.currentTime;
-        console.log(`Current Time: ${currentTime}`);
+        if (i < this.steps.length && currentTime > this.steps[i][0]) {
+          this.sendDanceFrame(this.steps[i][0]);
+          ++i;
+        }
       });
 
       this.referenceTarget.addEventListener("ended", () => {
         this.showScore();
       });
+
+      this.setupReferenceBg();
     }
 
     showScore() {
       this.stateValue = "score";
+      const dancers = [...this.persons.entries()].filter(
+        (v) => v[1].participating,
+      );
+
+      this.socket.on("scores", (scores) => {
+        dancers.forEach(([trackId, data]) => {
+          const clone = this.scoreTarget.content.cloneNode(true);
+
+          if (data.img) {
+            clone.querySelector(".-img").src = data.img;
+          }
+          clone.querySelector(".-score").innerText = Math.round(
+            scores[trackId],
+          );
+
+          this.scoreTarget.parentElement.appendChild(clone);
+        });
+      });
+
+      this.socket.emit("finished");
     }
 
     async sendPrepareFrame() {
@@ -156,6 +194,27 @@ Stimulus.register(
         .replace("data:image/jpeg;base64,", "");
 
       this.socket.emit("prepare", data);
+    }
+
+    async sendDanceFrame(timestamp) {
+      if (this.stateValue !== "dance") return;
+
+      const context = this.canvas.getContext("2d");
+      context.drawImage(
+        this.cameraTarget,
+        0,
+        0,
+        this.canvas.width,
+        this.canvas.height,
+      );
+      const data = this.canvas
+        .toDataURL("image/jpeg")
+        .replace("data:image/jpeg;base64,", "");
+
+      this.socket.on("dance_response", (response) => {
+        if (this.isDebug) this.drawDanceResult(response);
+      });
+      this.socket.emit("dance", data, timestamp);
     }
 
     disconnect() {
@@ -211,23 +270,24 @@ Stimulus.register(
       });
     }
 
-    async uploadVideo(url) {
-      const response = await fetch(url);
+    async uploadVideo({ upload_file, file_name }) {
+      const response = await fetch(upload_file);
       if (!response.ok) {
         console.error("Video doesn't exist");
-        Turbo.visit("/", { action: replace });
+        Turbo.visit("/", { action: "replace" });
         return;
       }
 
       const blob = await response.blob();
       const formData = new FormData();
-      formData.append("file", blob, "reference.mp4");
+      formData.append("file", blob, file_name);
 
       this.setPrepareStatus("Uploading reference video", true);
-      return fetch("/reference", {
+      const resp = await fetch("/reference", {
         method: "POST",
-        data: formData,
+        body: formData,
       });
+      return (await resp.json()).reference_id;
     }
 
     handleXPress(event) {
@@ -246,6 +306,7 @@ Stimulus.register(
           this.persons.set(id, {
             firstTPose: Date.now() - 3000,
             participating: true,
+            img: null,
           });
           this.countdownTimer.start(3);
         };
@@ -351,6 +412,27 @@ Stimulus.register(
       });
     }
 
+    drawDanceResult(response) {
+      this.debugCanvas.width = this.canvas.width;
+      this.debugCanvas.height = this.canvas.height;
+
+      const context = this.debugCanvas.getContext("2d");
+      context.fillStyle = "white";
+      context.fillRect(0, 0, this.debugCanvas.width, this.debugCanvas.height);
+
+      drawStickFigure(context, response.step, 0, "green");
+      const dancer = Object.values(response.dancers)[0];
+
+      if (dancer) {
+        drawStickFigure(
+          context,
+          dancer.pose,
+          this.debugCanvas.width / 2,
+          "green",
+        );
+      }
+    }
+
     /**
      * @param {PoseEstimation[]} result
      */
@@ -371,9 +453,20 @@ Stimulus.register(
           if (this.persons.has(obj.track_id)) {
             const person = this.persons.get(obj.track_id);
             if (Date.now() - person.firstTPose > 3000) {
+              const center = this.getKeypoint(obj, 0);
+              const halfLength = this.getLength(obj, 2, 1) * 1.5;
+
+              const img = crop(this.canvas, {
+                x: center[0] - halfLength,
+                y: center[1] - halfLength,
+                width: halfLength * 2,
+                height: halfLength * 2,
+              });
+
               this.persons.set(obj.track_id, {
                 firstTPose: person.firstTPose,
                 participating: true,
+                img: img,
               });
               this.countdownTimer.start(3);
             }
@@ -390,6 +483,27 @@ Stimulus.register(
           }
         }
       });
+    }
+
+    setupReferenceBg() {
+      const canvas = this.referenceBgTarget;
+      const video = this.referenceTarget;
+
+      const ctx = canvas.getContext("2d");
+
+      function drawBlurredBackground() {
+        canvas.width = canvas.parentElement.clientWidth;
+        canvas.height = canvas.parentElement.clientHeight;
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+        requestAnimationFrame(drawBlurredBackground);
+      }
+
+      drawBlurredBackground();
+    }
+
+    async fetchDanceSteps() {
+      const res = await fetch(`/reference/${this.referenceId}/steps`);
+      this.steps = await res.json();
     }
   },
 );

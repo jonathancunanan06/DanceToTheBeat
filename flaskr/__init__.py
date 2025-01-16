@@ -16,10 +16,16 @@ def create_app():
         # Define config variables
         DATABASE=os.path.join(app.instance_path, "database.sqlite"),
         POSE_MODEL="yolo11n-pose.pt",
+        REFERENCES_FOLDER=os.path.join(app.instance_path, "references"),
     )
 
     try:
         os.makedirs(app.instance_path)
+    except OSError:
+        pass
+
+    try:
+        os.makedirs(app.config["REFERENCES_FOLDER"])
     except OSError:
         pass
 
@@ -39,6 +45,17 @@ def create_app():
         output="gen/controller.bundle.js",
     )
     assets.register("controllers", controllers)
+    styles = Bundle(
+        "dist/lds-ring.css",
+        "styles/style.css",
+        "styles/home.css",
+        "styles/game.css",
+        "styles/prepare.css",
+        "styles/dance.css",
+        "styles/score.css",
+        output="gen/styles.bundle.css",
+    )
+    assets.register("styles", styles)
 
     from flaskr.routes import app_routes
 

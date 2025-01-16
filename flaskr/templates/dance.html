@@ -30,7 +30,8 @@
             </video>
         </div>
         <div class="dance">
-            <canvas class="dance-bg"></canvas>
+            <canvas class="dance-bg" data-game-target="referenceBg"></canvas>
+            <div class="dance-overlay"></div>
             <video class="dance-video" data-game-target="reference">
             </video>
         </div>
@@ -47,30 +48,21 @@
                 </div>
             </div>
             <div class="midscore">
-                <div class="midscore1">
-                    <img src="https://placehold.co/150x150"
-                    alt="star">
-                    <p>80</p>
-                </div>
-                <div class="midscore2">
-                    <img class="highest" src="{{ url_for('static', filename='images/crown-icon.svg') }}" 
-                    alt="crown">
-                    <img class="pic" src="https://placehold.co/150x150"
-                    alt="star">
-                    <p>90</p>
-                </div>
-                <div class="midscore3">
-                    <img src="https://placehold.co/150x150"
-                    alt="star">
-                    <p>85</p>
-                </div>
+                <template data-game-target="score">
+                    <div class="midscore1">
+                        <img class="-img"
+                             src="{{ url_for('static', filename='images/tripplestar-icon.svg') }}"
+                             alt="star">
+                        <p class="-score"></p>
+                    </div>
+                </template>
             </div>
             <div class="botscore">
-                <div class="botscore1">
+                <a href="{{ request.url }}" class="botscore1" data-game-target="retry">
                     <p>Retry</p>
                     <img src="{{ url_for('static', filename='images/retry-icon.svg') }}"
                          alt="retry">
-                </div>
+                </a>
                 <a href="{{ url_for("app.home") }}">
                     <div class="botscore2">
                         <p>Main Menu</p>

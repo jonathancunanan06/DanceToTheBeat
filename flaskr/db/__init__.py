@@ -1,3 +1,4 @@
+import os
 import sqlite3
 from datetime import datetime
 
@@ -23,6 +24,12 @@ def close_db(_e=None):
 
 
 def init_db():
+    close_db()
+
+    db_path = current_app.config["DATABASE"]
+    if os.path.exists(db_path):
+        os.remove(db_path)
+
     db = get_db()
 
     with current_app.open_resource("db/schema.sql") as f:

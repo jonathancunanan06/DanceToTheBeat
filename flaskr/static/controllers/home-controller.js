@@ -17,6 +17,7 @@ Stimulus.register(
         "prepare_page_target",
         JSON.stringify({
           upload_file: blobUrl,
+          file_name: file.name,
         }),
       );
       Turbo.visit("/dance");
